@@ -7,12 +7,13 @@ import { Observable } from 'rxjs/Rx';
     styleUrls: [ './budget.component.css' ]
 })
 export class BudgetComponent implements OnInit{
-    budget: number = 0;
-    btnText: string;
+    budget: number = 1000;
 
     ngOnInit(){
-        let btnText = "Add Income";
-        let secondTick = Observable.timer(1000,1000);
-        secondTick.subscribe((tick)=>{ this.budget += 1000; });
+        
+    }
+
+    onAddIncome(){
+        this.budget += this.budget;
     }
 }
