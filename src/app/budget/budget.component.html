@@ -1,5 +1,7 @@
 <div class="mat-app-background">
-    <h3>My Budget: &#8361;{{budget}}</h3>
+    <h3 [ngStyle]="{'color':budget<=1000?'red':'black',
+                    'background-color':budget<=1000?'yellow':'transparent'}">
+        My Budget: &#8361;{{budget}}</h3>
     <mat-form-field>
         <input matInput 
                placeholder="budget" 
