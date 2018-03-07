@@ -1,5 +1,5 @@
 <div class="mat-app-background">
-    <h3 [ngStyle]="{'color':budget<=1000?'red':'black',
+    <h3 class="budget-total" [ngStyle]="{'color':budget<=1000?'red':'black',
                     'background-color':budget<=1000?'yellow':'transparent'}">
         My Budget: <span *ngIf="budget!==''">&#8361;</span>{{budget}}</h3>
     <mat-form-field>
