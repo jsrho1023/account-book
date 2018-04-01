@@ -1,4 +1,4 @@
-<div class="mat-app-background">
+<div class="budget">
     <h3 class="budget-total">
         Today's Budget:
         <span *ngIf="budget!==''">&#8361;</span>{{budget}}</h3>
@@ -24,9 +24,9 @@
                 <mat-cell *matCellDef="let consumption"> {{consumption.desc}} </mat-cell>
             </ng-container>
 
+            <!-- Row Template -->
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let consumption; columns: displayedColumns;"></mat-row>
         </mat-table>
     </div>
-    <hr>
 </div>

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
-import { Observable } from 'rxjs/Rx';
 
 @Component({
     selector: 'app-budget',
@@ -11,7 +10,7 @@ export class BudgetComponent implements OnInit{
     budget: number = 20000;
     displayedColumns = ['amount','desc'];
     
-    consumptions : consumption[] = [{
+    consumptions = [{
         amount: 12000,
         desc: "food"
     },{
@@ -34,9 +33,4 @@ export class BudgetComponent implements OnInit{
     onAddIncome(){
 
     }
-}
-
-export interface consumption {
-    amount: number;
-    desc: string;
 }
