@@ -1,7 +1,5 @@
 <div class="budget">
-    <h3 class="budget-total">
-        Today's Budget:
-        <span *ngIf="budget!==''">&#8361;</span>{{budget}}</h3>
+    <h3 class="budget-total">Today's Budget: <span *ngIf="budget!==''">&#8361; </span>{{budget}}</h3>
     <hr>
     <h3 class="remain" [ngStyle]="{'color':remain<=0?'red':'black'}">
         Remain: &#8361; {{remain}}</h3>
