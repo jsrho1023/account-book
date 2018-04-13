@@ -1,5 +1,16 @@
 <div class="budget">
-    <h3 class="budget-total">Today's Budget: <span *ngIf="budget!==''">&#8361; </span>{{budget}}</h3>
+    <div class="budget-datepicker-box">
+        <div class="budget-total">
+            <span class="budget-title">Today's Budget</span>
+            <span class="budget-amount" *ngIf="budget!==''">&#8361; {{budget}}</span>            
+        </div>
+        <span class="fill-remaining-space"></span>
+        <mat-form-field>
+            <input matInput [matDatepicker]="datepicker" placeholder="Choose a date" [value]="date.value">
+            <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+            <mat-datepicker #datepicker></mat-datepicker>
+        </mat-form-field>
+    </div>
     <hr>
     <h3 class="remain" [ngStyle]="{'color':remain<=0?'red':'black'}">
         Remain: &#8361; {{remain}}</h3>

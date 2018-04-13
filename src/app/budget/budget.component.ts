@@ -1,6 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
-import { Consumption } from '../domain/consumption'
+import { Consumption } from '../domain/consumption';
+import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'app-budget',
@@ -10,6 +11,7 @@ import { Consumption } from '../domain/consumption'
 export class BudgetComponent implements OnInit{
     budget: number = 20000;
     displayedColumns = ['amount','desc'];
+    date: FormControl;
     
     consumptions = [
         new Consumption(12000, "food"),
@@ -24,9 +26,10 @@ export class BudgetComponent implements OnInit{
         this.consumptions.forEach(element => {
             this.remain -= element.amount;
         });
+        this.date = new FormControl(new Date());
     }
 
-    onAdd(){        
-
+    onAdd(){
+        
     }
 }

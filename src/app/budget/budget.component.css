@@ -2,6 +2,27 @@
     padding: 20px;
 }
 
+.budget-datepicker-box{
+    display: flex;
+    align-items: flex-end;
+}
+
 .budget-total{
-    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+    font-size: 19px;
+    align-self: flex-start;
+}
+
+.budget-title{
+    margin-bottom: 5px;
+    color: rgba(0,0,0,0.5);
+}
+
+.budget-amount{
+    margin-left: 20px;
+}
+
+.fill-remaining-space {
+    flex: 1;
 }

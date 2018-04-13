@@ -2,8 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { BudgetComponent } from './budget.component';
+import { DailyExpense } from '../domain/dailyExpense';
+import { Consumption } from '../domain/consumption';
 
 describe('BudgetComponent', () => {
   let component: BudgetComponent;
