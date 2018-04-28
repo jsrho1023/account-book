@@ -5,6 +5,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BudgetComponent } from './budget.component';
 import { DailyExpense } from '../domain/dailyExpense';
 import { Consumption } from '../domain/consumption';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material';
 
 describe('BudgetComponent', () => {
   let component: BudgetComponent;
@@ -13,7 +15,11 @@ describe('BudgetComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ BudgetComponent ],
-      imports: [ MatInputModule, MatTableModule, BrowserAnimationsModule ]
+      imports: [ MatInputModule, 
+        MatTableModule, 
+        BrowserAnimationsModule,
+        MatDatepickerModule,
+        MatNativeDateModule ]
     })
     .compileComponents();
   }));
@@ -31,6 +37,6 @@ describe('BudgetComponent', () => {
   it('should have budget value', () => {
     const budgetComponent: HTMLElement = fixture.nativeElement;
     let titleElement = budgetComponent.querySelector(".budget-total");
-    expect(titleElement.textContent).toEqual("Today's Budget: ₩ 20000");
+    expect(titleElement.textContent.trim()).toContain("₩ 20000");
   })
 });

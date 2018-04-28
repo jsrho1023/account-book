@@ -12,8 +12,10 @@
         </mat-form-field>
     </div>
     <hr>
-    <h3 class="remain" [ngStyle]="{'color':remain<=0?'red':'black'}">
-        Remain: &#8361; {{remain}}</h3>
+    <div class="remain-total">
+        <span class="remain-title">Remain</span>
+        <span class="remain-amount" [ngStyle]="{'color':remain<=0?'red':'black'}">&#8361; {{remain}}</span>
+    </div>
     <hr>
     <mat-form-field>
         <input matInput placeholder="consumption" type="text" />

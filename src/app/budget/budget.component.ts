@@ -3,6 +3,7 @@ import { MatTableDataSource } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { DailyExpense } from '../domain/dailyExpense';
 import { Consumption } from '../domain/consumption';
+import { DailyExpenseService } from '../service/daily-expense.service';
 
 @Component({
     selector: 'app-budget',
@@ -14,18 +15,20 @@ export class BudgetComponent implements OnInit{
     displayedColumns = ['amount','desc'];
     date: FormControl;
     
+    dailyExpenseService: DailyExpenseService;
     dailyExpense : DailyExpense;
 
     dataSource : MatTableDataSource<Consumption>; 
     remain: number;
 
+    constructor(dailyExpenseService : DailyExpenseService){
+        this.dailyExpenseService = dailyExpenseService;
+    }
+
     ngOnInit(){
         this.remain = this.budget;        
         this.date = new FormControl(new Date());
-        this.dailyExpense = new DailyExpense(new Date());
-        this.dailyExpense.addConsumption(new Consumption(12000, "food"))
-        this.dailyExpense.addConsumption(new Consumption(10000, "beverage"))
-        this.dailyExpense.addConsumption(new Consumption(5000, "dissert"))
+        this.dailyExpense = this.dailyExpenseService.getDailyExpense(new Date());
         this.dataSource = new MatTableDataSource(this.dailyExpense.consumptions);
         this.dailyExpense.consumptions.forEach(element => {
             this.remain -= element.amount;

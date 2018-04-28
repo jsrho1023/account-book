@@ -23,6 +23,22 @@
     margin-left: 20px;
 }
 
+.remain-total{
+    display: flex;
+    flex-direction: column;
+    font-size: 19px;
+    align-self: flex-start;
+}
+
+.remain-title{
+    margin-bottom: 5px;
+    color: rgba(0,0,0,0.5);
+}
+
+.remain-amount{
+    margin-left: 20px;
+}
+
 .fill-remaining-space {
     flex: 1;
 }

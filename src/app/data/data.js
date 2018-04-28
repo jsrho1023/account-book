@@ -4,11 +4,11 @@
         "consumptions": [
             {
                 "amount": 1000,
-                "desc": "test"
+                "desc": "stop wasting"
             },
             {
                 "amount": 2000,
-                "desc": "test"
+                "desc": "I know you did"
             }
         ]
     },
@@ -17,11 +17,11 @@
         "consumptions": [
             {
                 "amount": 1000,
-                "desc": "test"
+                "desc": "always"
             },
             {
                 "amount": 2000,
-                "desc": "test"
+                "desc": "Please stop"
             }
         ]
     },
@@ -30,11 +30,11 @@
         "consumptions": [
             {
                 "amount": 1000,
-                "desc": "test"
+                "desc": "Again and again.."
             },
             {
                 "amount": 2000,
-                "desc": "test"
+                "desc": "No more money in your poket"
             }
         ]
     }
