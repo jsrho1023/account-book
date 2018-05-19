@@ -2,7 +2,7 @@
     <div class="budget-datepicker-box">
         <div class="budget-total">
             <span class="budget-title">Today's Budget</span>
-            <span class="budget-amount" *ngIf="budget!==''">&#8361; {{budget}}</span>            
+            <span class="budget-amount" *ngIf="budget.toString()!==''">&#8361; {{budget}}</span>            
         </div>
         <span class="fill-remaining-space"></span>
         <mat-form-field>
