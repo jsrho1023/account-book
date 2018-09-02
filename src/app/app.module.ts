@@ -14,7 +14,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { BudgetComponent } from "./budget/budget.component";
 import { HeaderComponent } from './header/header.component';
-import { DailyExpenseService } from './service/daily-expense.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +33,7 @@ import { DailyExpenseService } from './service/daily-expense.service';
     MatDatepickerModule,
     MatNativeDateModule
   ],
-  providers: [DailyExpenseService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

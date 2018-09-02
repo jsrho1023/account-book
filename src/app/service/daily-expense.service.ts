@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DailyExpense } from "../domain/dailyExpense";
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class DailyExpenseService {
     getDailyExpense(date:Date) {
         let jsonData = {
