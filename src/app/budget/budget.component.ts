@@ -4,6 +4,9 @@ import { FormControl } from '@angular/forms';
 import { DailyExpense } from '../domain/dailyExpense';
 import { Consumption } from '../domain/consumption';
 import { DailyExpenseService } from '../service/daily-expense.service';
+import { Store, Select } from "@ngxs/store";
+import { Observable } from 'rxjs';
+import { AddConsumption } from './budget.actions';
 
 @Component({
     selector: 'app-budget',
@@ -21,7 +24,9 @@ export class BudgetComponent implements OnInit{
     dataSource : MatTableDataSource<Consumption>; 
     remain: number;
 
-    constructor(dailyExpenseService : DailyExpenseService){
+    @Select(state => state.dailyExpense) dailyExpense$: Observable<any>;
+
+    constructor(dailyExpenseService : DailyExpenseService, private store: Store){
         this.dailyExpenseService = dailyExpenseService;
     }
 
@@ -29,13 +34,19 @@ export class BudgetComponent implements OnInit{
         this.remain = this.budget;        
         this.date = new FormControl(new Date());
         this.dailyExpense = this.dailyExpenseService.getDailyExpense(new Date());
-        this.dataSource = new MatTableDataSource(this.dailyExpense.consumptions);
-        this.dailyExpense.consumptions.forEach(element => {
-            this.remain -= element.amount;
-        });
+        this.dailyExpense$.subscribe((dailyExpense)=>{
+            this.dataSource = new MatTableDataSource(dailyExpense.consumptions);
+            dailyExpense.consumptions.forEach(element => {
+                this.remain -= element.amount;
+            });
+        })
+        
+        this.addConsumption(new Consumption(1000, "stop wasting"));
+        this.addConsumption(new Consumption(2000, "I knew you will"));
     }
 
-    onAdd(){
-        
+    addConsumption(consumption: Consumption){
+        this.store
+            .dispatch(new AddConsumption(consumption));;
     }
 }

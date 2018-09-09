@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DailyExpense } from "../domain/dailyExpense";
+import { Consumption } from "../domain/consumption";
 
 @Injectable({providedIn: 'root'})
 export class DailyExpenseService {
@@ -17,7 +18,21 @@ export class DailyExpenseService {
                 }
             ]
         };
-        let dailyExpense = new DailyExpense().fromJson(jsonData);
+        let dailyExpense = this.fromJson(jsonData);
         return dailyExpense
+    }
+
+    fromJson(jsonObject){
+        let dailyExpense = new DailyExpense();
+        dailyExpense.consumptions = new Array<Consumption>();
+        dailyExpense.datetime = new Date(jsonObject["datetime"]);
+        let consumptionsArray = jsonObject["consumptions"];
+        if(consumptionsArray){
+            consumptionsArray.forEach((element) => {
+                let consumption = new Consumption(element["amount"], element["desc"]);
+                dailyExpense.consumptions.push(consumption)
+            });
+        }
+        return dailyExpense;
     }
 }

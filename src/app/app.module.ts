@@ -8,12 +8,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { BudgetComponent } from "./budget/budget.component";
 import { HeaderComponent } from './header/header.component';
+
+import { NgxsModule } from '@ngxs/store';
+import { DailyExpenseState } from './budget/budget.state';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,10 @@ import { HeaderComponent } from './header/header.component';
     MatIconModule,
     MatTableModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    NgxsModule.forRoot([
+      DailyExpenseState
+    ])
   ],
   providers: [],
   bootstrap: [AppComponent]
