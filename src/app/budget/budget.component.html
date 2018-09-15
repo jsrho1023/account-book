@@ -1,26 +1,40 @@
 <div class="budget">
-    <div class="budget-datepicker-box">
-        <div class="budget-total">
-            <span class="budget-title">Today's Budget</span>
-            <span class="budget-amount" *ngIf="budget.toString()!==''">&#8361; {{budget}}</span>            
-        </div>
-        <span class="fill-remaining-space"></span>
-        <mat-form-field>
-            <input matInput [matDatepicker]="datepicker" placeholder="Choose a date" [value]="date.value">
-            <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
-            <mat-datepicker #datepicker></mat-datepicker>
-        </mat-form-field>
-    </div>
-    <hr>
-    <div class="remain-total">
-        <span class="remain-title">Remain</span>
-        <span class="remain-amount" [ngStyle]="{'color':remain<=0?'red':'black'}">&#8361; {{remain}}</span>
-    </div>
-    <hr>
-    <mat-form-field>
-        <input matInput placeholder="consumption" type="text" />
+
+    <mat-form-field class="ngDatePicker">
+        <input style="display:inline" matInput [matDatepicker]="datepicker" placeholder="Choose a date" [value]="date.value">
+        <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker></mat-datepicker>
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="onAdd()">Add Consumption</button>
+
+    <div class="budget-total">
+        <span class="budget-title">Today's Budget</span>
+        <span class="budget-amount" *ngIf="budget.toString()!==''">&#8361; {{budget}}</span>
+    </div>
+
+    <div class="division-line"></div>
+
+    <div class="balance-total">
+        <span class="balance-title">Balance</span>
+        <span class="balance-amount" [ngStyle]="{'color':remain<=0?'red':'black'}">&#8361; {{balance}}</span>
+    </div>
+
+    <div class="division-line"></div>
+
+    <span class="add-consumption">Add Consumption:</span>
+    <form class="consumption-form" (ngSubmit)="onSubmit(f)" #f="ngForm">
+        <mat-form-field>
+            <input matInput ngModel name="amount" placeholder="amount" type="text" />
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput ngModel name="desc" placeholder="description" type="text" />
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Add</button>
+    </form>
+
+    <div class="consumption-list">
+        <span class="consumption-list-title">Today's Consumptions</span>
+    </div>
+
     <div class="mat-elevation-z1">
         <mat-table [dataSource]="dataSource">
             <!-- Amount Column -->

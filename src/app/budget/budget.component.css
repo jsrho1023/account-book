@@ -2,16 +2,12 @@
     padding: 20px;
 }
 
-.budget-datepicker-box{
-    display: flex;
-    align-items: flex-end;
-}
-
 .budget-total{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     font-size: 19px;
-    align-self: flex-start;
+    font-weight: bold;
 }
 
 .budget-title{
@@ -23,23 +19,63 @@
     margin-left: 20px;
 }
 
-.remain-total{
-    display: flex;
-    flex-direction: column;
-    font-size: 19px;
-    align-self: flex-start;
+.division-line {
+    width: 100%;
+    height: 1px;
     margin-bottom: 20px;
+    background-color: rgba(0,0,0,.2);
 }
 
-.remain-title{
+.balance-total{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.balance-title{
     margin-bottom: 5px;
     color: rgba(0,0,0,0.5);
 }
 
-.remain-amount{
+.balance-amount{
     margin-left: 20px;
 }
 
 .fill-remaining-space {
     flex: 1;
+}
+
+.add-consumption {
+    display: block;
+    min-width: 135px;
+    margin-top: 10px;
+    color: rgba(0,0,0,0.5);
+}
+
+.consumption-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.consumption-form mat-form-field {
+    width: 30%;
+    margin-right: 10px;
+}
+
+.consumption-form button {
+    width: 30%;
+    min-width: 100px;
+}
+
+.consumption-list {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.consumption-list-title {
+    color: rgba(0,0,0,0.5);
 }

@@ -1,7 +1,6 @@
 import { Action, State, StateContext } from '@ngxs/store';
 import { DailyExpense } from '../domain/dailyExpense';
 import { AddConsumption } from './budget.actions';
-import { Consumption } from '../domain/consumption';
 
 @State<DailyExpense>({
     name: 'dailyExpense',
