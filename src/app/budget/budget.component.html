@@ -9,26 +9,34 @@
     <div class="budget-balance">
         <div class="balance-total">
             <span class="balance-title">Balance</span>
-            <span class="balance-amount" [ngStyle]="{'color':remain<=0?'red':'black'}">&#8361; {{balance}}</span>
+            <span class="balance-amount" [ngStyle]="{'color':remain<=0?'red':'black'}">{{balance | currency:'KRW'}}</span>
         </div>
 
         <div class="division-line"></div>
 
         <div class="budget-total">
             <span class="budget-title">Today's Budget</span>
-            <span class="budget-amount" *ngIf="budget.toString()!==''">&#8361; {{budget}}</span>
+            <span class="budget-amount" *ngIf="budget.toString()!==''">{{budget | currency:'KRW'}}</span>
         </div>
 
         <div class="division-line"></div>
     </div>
 
     <span class="add-consumption">Add Consumption:</span>
-    <form class="consumption-form" (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <form class="consumption-form" (ngSubmit)="onSubmit()" [formGroup]="consumptionForm">
         <mat-form-field>
-            <input matInput ngModel name="amount" placeholder="amount" type="text" />
+            <input matInput
+                formControlName="amount" [errorStateMatcher]="matcher" placeholder="Amount" type="text" required>
+            <mat-error *ngIf="consumptionForm.controls.amount.hasError('pattern') && !consumptionForm.controls.amount.hasError('required')">
+                <strong>Numbers</strong> only
+            </mat-error>
+            <mat-error *ngIf="consumptionForm.controls.amount.hasError('required')">
+                Amount is <strong>required</strong>
+            </mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput ngModel name="desc" placeholder="description" type="text" />
+            <input matInput
+                formControlName="desc" placeholder="Description" type="text" />
         </mat-form-field>
         <button mat-raised-button color="primary" type="submit">Add</button>
     </form>
@@ -42,7 +50,7 @@
             <!-- Amount Column -->
             <ng-container matColumnDef="amount">
                 <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
-                <mat-cell *matCellDef="let consumption"> {{consumption.amount}} </mat-cell>
+                <mat-cell *matCellDef="let consumption"> {{consumption.amount | currency:'KRW'}} </mat-cell>
             </ng-container>
 
             <!-- Description Column -->
