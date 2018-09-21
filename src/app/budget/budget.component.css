@@ -1,29 +1,7 @@
 .budget{
+    box-sizing: border-box;
+    min-width: 400px;
     padding: 20px;
-}
-
-.budget-total{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    font-size: 19px;
-    font-weight: bold;
-}
-
-.budget-title{
-    margin-bottom: 5px;
-    color: rgba(0,0,0,0.5);
-}
-
-.budget-amount{
-    margin-left: 20px;
-}
-
-.division-line {
-    width: 100%;
-    height: 1px;
-    margin-bottom: 20px;
-    background-color: rgba(0,0,0,.2);
 }
 
 .balance-total{
@@ -40,7 +18,31 @@
 }
 
 .balance-amount{
-    margin-left: 20px;
+    margin-left: 50px;
+}
+
+.budget-total{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.budget-title{
+    margin-bottom: 5px;
+    color: rgba(0,0,0,0.5);
+}
+
+.budget-amount{
+    margin-left: 50px;
+}
+
+.division-line {
+    width: 100%;
+    height: 1px;
+    margin-bottom: 20px;
+    background-color: rgba(0,0,0,.2);
 }
 
 .fill-remaining-space {
@@ -78,4 +80,17 @@
 
 .consumption-list-title {
     color: rgba(0,0,0,0.5);
+}
+
+@media screen and (min-width: 600px) {
+    .budget-balance {
+        display: flex;
+        flex-direction: row;
+        border-bottom: 1px solid rgba(0,0,0,.2);
+        justify-content: space-between;
+    }
+
+    .division-line {
+        display: none;
+    }
 }

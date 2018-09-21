@@ -6,19 +6,21 @@
         <mat-datepicker #datepicker></mat-datepicker>
     </mat-form-field>
 
-    <div class="budget-total">
-        <span class="budget-title">Today's Budget</span>
-        <span class="budget-amount" *ngIf="budget.toString()!==''">&#8361; {{budget}}</span>
+    <div class="budget-balance">
+        <div class="balance-total">
+            <span class="balance-title">Balance</span>
+            <span class="balance-amount" [ngStyle]="{'color':remain<=0?'red':'black'}">&#8361; {{balance}}</span>
+        </div>
+
+        <div class="division-line"></div>
+
+        <div class="budget-total">
+            <span class="budget-title">Today's Budget</span>
+            <span class="budget-amount" *ngIf="budget.toString()!==''">&#8361; {{budget}}</span>
+        </div>
+
+        <div class="division-line"></div>
     </div>
-
-    <div class="division-line"></div>
-
-    <div class="balance-total">
-        <span class="balance-title">Balance</span>
-        <span class="balance-amount" [ngStyle]="{'color':remain<=0?'red':'black'}">&#8361; {{balance}}</span>
-    </div>
-
-    <div class="division-line"></div>
 
     <span class="add-consumption">Add Consumption:</span>
     <form class="consumption-form" (ngSubmit)="onSubmit(f)" #f="ngForm">

@@ -44,8 +44,8 @@ export class BudgetComponent implements OnInit{
     }
 
     onSubmit(formData){
-        let amount = formData.controls.amount.value
-        let desc = formData.controls.desc.value
+        let amount: number = formData.controls.amount.value
+        let desc: string = formData.controls.desc.value
         this.addConsumption(new Consumption(amount, desc));
     }
 }
