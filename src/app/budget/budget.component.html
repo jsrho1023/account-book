@@ -9,14 +9,14 @@
     <div class="budget-balance">
         <div class="balance-total">
             <span class="balance-title">Balance</span>
-            <span class="balance-amount" [ngStyle]="{'color':remain<=0?'red':'black'}">{{balance | currency:'KRW'}}</span>
+            <span class="balance-amount" [ngStyle]="{'color':balance<=0?'red':'black'}">{{balance | currency:'KRW':'symbol'}}</span>
         </div>
 
         <div class="division-line"></div>
 
         <div class="budget-total">
             <span class="budget-title">Today's Budget</span>
-            <span class="budget-amount" *ngIf="budget.toString()!==''">{{budget | currency:'KRW'}}</span>
+            <span class="budget-amount" *ngIf="budget.toString()!==''">{{budget | currency:'KRW':'symbol'}}</span>
         </div>
 
         <div class="division-line"></div>

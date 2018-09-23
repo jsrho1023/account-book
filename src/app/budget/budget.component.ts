@@ -6,6 +6,7 @@ import { Store, Select } from "@ngxs/store";
 import { Observable } from 'rxjs';
 import { AddConsumption } from './budget.actions';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { DailyExpense } from '../domain/dailyExpense';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class ConsumptionErrorStateMatcher implements ErrorStateMatcher {
@@ -38,7 +39,7 @@ export class BudgetComponent implements OnInit {
     
     matcher = new ConsumptionErrorStateMatcher();
 
-    @Select(state => state.dailyExpense) dailyExpense$: Observable<any>;
+    @Select(state => state.dailyExpense) dailyExpense$: Observable<DailyExpense>;
 
     constructor(private store: Store) { }
 
@@ -50,7 +51,7 @@ export class BudgetComponent implements OnInit {
             this.dataSource = new MatTableDataSource(dailyExpense.consumptions);
             let totalExpense: number = 0;
             dailyExpense.consumptions.forEach(consumption => {
-                totalExpense = totalExpense + parseInt(consumption.amount);
+                totalExpense = totalExpense + consumption.amount
             });
 
             this.balance = this.budget - totalExpense;
@@ -63,7 +64,7 @@ export class BudgetComponent implements OnInit {
     }
 
     onSubmit() {
-        let amount: number = this.consumptionForm.controls.amount.value
+        let amount: number = Number(this.consumptionForm.controls.amount.value)
         let desc: string = this.consumptionForm.controls.desc.value
         this.addConsumption(new Consumption(amount, desc));
     }
