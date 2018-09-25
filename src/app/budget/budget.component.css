@@ -1,7 +1,7 @@
 .budget{
     box-sizing: border-box;
     min-width: 400px;
-    padding: 20px;
+    padding: 16px;
 }
 
 .balance-total{

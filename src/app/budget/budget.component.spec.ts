@@ -9,8 +9,10 @@ import { BudgetComponent } from './budget.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
 import { DailyExpenseState } from './budget.state';
-import { NgxsModule, Store, Select } from '@ngxs/store';
+import { NgxsModule } from '@ngxs/store';
 import { of, Observable } from 'rxjs';
+import { Consumption } from '../domain/consumption';
+import { AddConsumption } from './budget.actions';
 
 describe('BudgetComponent', () => {
   let component: BudgetComponent;
@@ -63,8 +65,8 @@ describe('BudgetComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Life Cycle', () => {
-    describe('ngOnInit', () => {
+  describe('Render', () => {
+    describe('when loaded', () => {
       it('should have budget value 10000', () => {
         const budgetComponent: HTMLElement = fixture.nativeElement;
         const titleElement = budgetComponent.querySelector(".budget-total");
@@ -77,6 +79,38 @@ describe('BudgetComponent', () => {
         expect(remainElement.textContent.trim()).toContain("7,000")
       })
     })
+  })
 
+  describe('Life Cycle', () => {
+    describe('when ngOnInit', () => {
+      it('should subscribe dailyExpense state', () => {
+        spyOn(fixture.componentInstance.dailyExpense$, 'subscribe');
+        fixture.componentInstance.ngOnInit()
+        expect(fixture.componentInstance.dailyExpense$.subscribe).toHaveBeenCalled()
+      })
+    })
+  })
+
+  describe('Method', () => {
+    describe('when addConsumption', () => {
+      it('should dispatch AddConsumption action', () => {
+        const budgetComponent: BudgetComponent = fixture.componentInstance;
+        spyOn(budgetComponent.store, 'dispatch');
+        const consumption = new Consumption(2000, 'test');
+        budgetComponent.addConsumption(consumption)
+        expect(fixture.componentInstance.store.dispatch).toHaveBeenCalledWith(new AddConsumption(consumption));
+      })
+    })
+
+    describe('when onSubmit', () => {
+      it('should call addConsumption with form values', () => {
+        const budgetComponent: BudgetComponent = fixture.componentInstance;
+        budgetComponent.consumptionForm.controls.amount.setValue(2000);
+        budgetComponent.consumptionForm.controls.desc.setValue('test');
+        spyOn(fixture.componentInstance, 'addConsumption');
+        fixture.componentInstance.onSubmit();
+        expect(fixture.componentInstance.addConsumption).toHaveBeenCalledWith(new Consumption(2000, 'test'));
+      })
+    })
   })
 });

@@ -41,7 +41,7 @@ export class BudgetComponent implements OnInit {
 
     @Select(state => state.dailyExpense) dailyExpense$: Observable<DailyExpense>;
 
-    constructor(private store: Store) { }
+    constructor(public store: Store) { }
 
     ngOnInit() {
         this.balance = this.budget;

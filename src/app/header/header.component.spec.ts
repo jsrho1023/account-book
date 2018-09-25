@@ -28,4 +28,21 @@ describe('HeaderComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('Render', () => {
+    describe('when component loaded', () => {
+      it('should have title "Daily Account Log"', () => {
+        const HeaderComponent: HTMLElement = fixture.nativeElement;
+        const titleElement = HeaderComponent.querySelector(".application-title");
+        expect(titleElement.textContent).toEqual("Daily Account Log");
+      })
+
+      it('should have icon', () => {
+        const HeaderComponent: HTMLElement = fixture.nativeElement;
+        const remainElement = HeaderComponent.querySelector("mat-icon");
+        expect(remainElement).not.toBe(null);
+      })
+    })
+
+  })
 });
