@@ -34,8 +34,7 @@ describe('BudgetComponent', () => {
         NgxsModule.forRoot([
           DailyExpenseState
         ])]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -110,6 +109,16 @@ describe('BudgetComponent', () => {
         spyOn(fixture.componentInstance, 'addConsumption');
         fixture.componentInstance.onSubmit();
         expect(fixture.componentInstance.addConsumption).toHaveBeenCalledWith(new Consumption(2000, 'test'));
+      })
+
+      it('should clear value of form controls', () => {
+        const budgetComponent: BudgetComponent = fixture.componentInstance;
+        budgetComponent.consumptionForm.controls.amount.setValue(2000);
+        budgetComponent.consumptionForm.controls.desc.setValue('test');
+        fixture.componentInstance.onSubmit();
+        expect(budgetComponent.consumptionForm.controls.amount.value).toEqual('')
+        expect(budgetComponent.consumptionForm.controls.desc.value).toEqual('')
+        expect(budgetComponent.consumptionForm.controls.amount.errors).toEqual(null)
       })
     })
   })

@@ -15,8 +15,7 @@ describe('HeaderComponent', () => {
         MatToolbarModule,
         MatIconModule
       ]
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {

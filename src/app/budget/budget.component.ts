@@ -36,7 +36,7 @@ export class BudgetComponent implements OnInit {
         ]),
         desc: new FormControl('')
     });
-    
+
     matcher = new ConsumptionErrorStateMatcher();
 
     @Select(state => state.dailyExpense) dailyExpense$: Observable<DailyExpense>;
@@ -67,5 +67,9 @@ export class BudgetComponent implements OnInit {
         let amount: number = Number(this.consumptionForm.controls.amount.value)
         let desc: string = this.consumptionForm.controls.desc.value
         this.addConsumption(new Consumption(amount, desc));
+        for (let name in this.consumptionForm.controls) {
+            (<FormControl>this.consumptionForm.controls[name]).setValue('');
+            this.consumptionForm.controls[name].setErrors(null);
+        }
     }
 }
