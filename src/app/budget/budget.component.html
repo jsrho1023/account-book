@@ -23,7 +23,7 @@
     </div>
 
     <span class="add-consumption">Add Consumption:</span>
-    <form class="consumption-form" (ngSubmit)="onSubmit()" [formGroup]="consumptionForm">
+    <form class="consumption-form" (ngSubmit)="onAdd()" [formGroup]="consumptionForm">
         <mat-form-field>
             <input matInput
                 formControlName="amount" [errorStateMatcher]="matcher" placeholder="Amount" type="text" required>
@@ -36,9 +36,9 @@
         </mat-form-field>
         <mat-form-field>
             <input matInput
-                formControlName="desc" placeholder="Description" type="text" />
+                formControlName="desc" placeholder="Description" type="text">
         </mat-form-field>
-        <button mat-raised-button color="primary" type="submit">Add</button>
+        <button [disabled]="!consumptionForm.valid" mat-stroked-button color="accent" type="submit">Add</button>
     </form>
 
     <div class="consumption-list">
@@ -63,5 +63,10 @@
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let consumption; columns: displayedColumns;"></mat-row>
         </mat-table>
+    </div>
+
+    <div class="action-button-box">
+        <button mat-raised-button color="warn" (click)="onClear()" [disabled]="!canClear">Clear</button>
+        <button mat-raised-button color="primary">Save</button>
     </div>
 </div>
