@@ -26,7 +26,7 @@
     <form class="consumption-form" (ngSubmit)="onAdd()" [formGroup]="consumptionForm">
         <mat-form-field>
             <input matInput
-                formControlName="amount" [errorStateMatcher]="matcher" placeholder="Amount" type="text" required>
+                formControlName="amount" [errorStateMatcher]="matcher" placeholder="Amount" type="text">
             <mat-error *ngIf="consumptionForm.controls.amount.hasError('pattern') && !consumptionForm.controls.amount.hasError('required')">
                 <strong>Numbers</strong> only
             </mat-error>

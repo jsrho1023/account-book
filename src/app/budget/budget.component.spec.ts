@@ -11,8 +11,9 @@ import { MatNativeDateModule } from '@angular/material';
 import { DailyExpenseState } from './budget.state';
 import { NgxsModule } from '@ngxs/store';
 import { of, Observable } from 'rxjs';
+import { DailyExpense } from '../domain/dailyExpense';
 import { Consumption } from '../domain/consumption';
-import { AddConsumption } from './budget.actions';
+import { AddConsumption, ClearConsumptions } from './budget.actions';
 
 describe('BudgetComponent', () => {
   let component: BudgetComponent;
@@ -87,10 +88,38 @@ describe('BudgetComponent', () => {
         fixture.componentInstance.ngOnInit()
         expect(fixture.componentInstance.dailyExpense$.subscribe).toHaveBeenCalled()
       })
+
+      it('should set canClear true', () => {
+        expect(fixture.componentInstance.canClear).toBeTruthy()
+      })
     })
   })
 
   describe('Method', () => {
+    describe('when checkConsumptions', ()=>{
+      it('should set canClear false if consumptions has no consumption', ()=>{
+        const budgetComponent: BudgetComponent = fixture.componentInstance;
+        const dailyExpense: DailyExpense = {
+          datetime: new Date(),
+          consumptions: []
+        }
+        budgetComponent.checkConsumptions(dailyExpense);
+        expect(budgetComponent.canClear).toBeFalsy();
+      })
+
+      it('should set canClear true if consumptions has any consumption', ()=>{
+        const budgetComponent: BudgetComponent = fixture.componentInstance;
+        const dailyExpense: DailyExpense = {
+          datetime: new Date(),
+          consumptions: [
+            new Consumption(1000, 'test')
+          ]
+        }
+        budgetComponent.checkConsumptions(dailyExpense);
+        expect(budgetComponent.canClear).toBeTruthy();
+      })
+    })
+
     describe('when addConsumption', () => {
       it('should dispatch AddConsumption action', () => {
         const budgetComponent: BudgetComponent = fixture.componentInstance;
@@ -101,13 +130,13 @@ describe('BudgetComponent', () => {
       })
     })
 
-    describe('when onSubmit', () => {
+    describe('when onAdd', () => {
       it('should call addConsumption with form values', () => {
         const budgetComponent: BudgetComponent = fixture.componentInstance;
         budgetComponent.consumptionForm.controls.amount.setValue(2000);
         budgetComponent.consumptionForm.controls.desc.setValue('test');
         spyOn(fixture.componentInstance, 'addConsumption');
-        fixture.componentInstance.onSubmit();
+        fixture.componentInstance.onAdd();
         expect(fixture.componentInstance.addConsumption).toHaveBeenCalledWith(new Consumption(2000, 'test'));
       })
 
@@ -115,10 +144,20 @@ describe('BudgetComponent', () => {
         const budgetComponent: BudgetComponent = fixture.componentInstance;
         budgetComponent.consumptionForm.controls.amount.setValue(2000);
         budgetComponent.consumptionForm.controls.desc.setValue('test');
-        fixture.componentInstance.onSubmit();
-        expect(budgetComponent.consumptionForm.controls.amount.value).toEqual('')
-        expect(budgetComponent.consumptionForm.controls.desc.value).toEqual('')
-        expect(budgetComponent.consumptionForm.controls.amount.errors).toEqual(null)
+        fixture.componentInstance.onAdd();
+        expect(budgetComponent.consumptionForm.controls.amount.value).toEqual(null)
+        expect(budgetComponent.consumptionForm.controls.desc.value).toEqual(null)
+        expect(budgetComponent.consumptionForm.controls.amount.errors).toEqual({required: true})
+      })
+    })
+
+    describe('when onClear', ()=>{
+      it('should clear dailyExpense$.consumptions',()=>{
+        const budgetComponent: BudgetComponent = fixture.componentInstance;
+        spyOn(budgetComponent.store, 'dispatch');
+        budgetComponent.onClear();
+        expect(budgetComponent.store.dispatch).toHaveBeenCalledWith(new ClearConsumptions());
+        expect(budgetComponent.canClear).toBeFalsy();
       })
     })
   })

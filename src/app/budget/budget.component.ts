@@ -29,7 +29,6 @@ export class BudgetComponent implements OnInit {
     balance: number;
 
     canClear: boolean = false;
-    changed: boolean = false;
 
     consumptionForm = new FormGroup({
         amount: new FormControl('', [
