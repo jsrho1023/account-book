@@ -61,19 +61,19 @@ describe('BudgetComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
   describe('Render', () => {
     describe('when loaded', () => {
-      it('should have budget value 10000', () => {
+      it('then have budget value 10000', () => {
         const budgetComponent: HTMLElement = fixture.nativeElement;
         const titleElement = budgetComponent.querySelector(".budget-total");
         expect(titleElement.textContent.trim()).toContain("10,000");
       })
 
-      it('should have remain value 7000', () => {
+      it('then have remain value 7000', () => {
         const budgetComponent: HTMLElement = fixture.nativeElement;
         const remainElement = budgetComponent.querySelector(".balance-amount");
         expect(remainElement.textContent.trim()).toContain("7,000")
@@ -83,13 +83,13 @@ describe('BudgetComponent', () => {
 
   describe('Life Cycle', () => {
     describe('when ngOnInit', () => {
-      it('should subscribe dailyExpense state', () => {
+      it('then subscribe dailyExpense state', () => {
         spyOn(fixture.componentInstance.dailyExpense$, 'subscribe');
         fixture.componentInstance.ngOnInit()
         expect(fixture.componentInstance.dailyExpense$.subscribe).toHaveBeenCalled()
       })
 
-      it('should set canClear true', () => {
+      it('then set canClear true', () => {
         expect(fixture.componentInstance.canClear).toBeTruthy()
       })
     })
@@ -97,7 +97,7 @@ describe('BudgetComponent', () => {
 
   describe('Method', () => {
     describe('when checkConsumptions', ()=>{
-      it('should set canClear false if consumptions has no consumption', ()=>{
+      it('then set canClear false if consumptions has no consumption', ()=>{
         const budgetComponent: BudgetComponent = fixture.componentInstance;
         const dailyExpense: DailyExpense = {
           datetime: new Date(),
@@ -107,7 +107,7 @@ describe('BudgetComponent', () => {
         expect(budgetComponent.canClear).toBeFalsy();
       })
 
-      it('should set canClear true if consumptions has any consumption', ()=>{
+      it('then set canClear true if consumptions has any consumption', ()=>{
         const budgetComponent: BudgetComponent = fixture.componentInstance;
         const dailyExpense: DailyExpense = {
           datetime: new Date(),
@@ -121,7 +121,7 @@ describe('BudgetComponent', () => {
     })
 
     describe('when addConsumption', () => {
-      it('should dispatch AddConsumption action', () => {
+      it('then dispatch AddConsumption action', () => {
         const budgetComponent: BudgetComponent = fixture.componentInstance;
         spyOn(budgetComponent.store, 'dispatch');
         const consumption = new Consumption(2000, 'test');
@@ -131,7 +131,7 @@ describe('BudgetComponent', () => {
     })
 
     describe('when onAdd', () => {
-      it('should call addConsumption with form values', () => {
+      it('then call addConsumption with form values', () => {
         const budgetComponent: BudgetComponent = fixture.componentInstance;
         budgetComponent.consumptionForm.controls.amount.setValue(2000);
         budgetComponent.consumptionForm.controls.desc.setValue('test');
@@ -140,7 +140,7 @@ describe('BudgetComponent', () => {
         expect(fixture.componentInstance.addConsumption).toHaveBeenCalledWith(new Consumption(2000, 'test'));
       })
 
-      it('should clear value of form controls', () => {
+      it('then clear value of form controls', () => {
         const budgetComponent: BudgetComponent = fixture.componentInstance;
         budgetComponent.consumptionForm.controls.amount.setValue(2000);
         budgetComponent.consumptionForm.controls.desc.setValue('test');
@@ -152,7 +152,7 @@ describe('BudgetComponent', () => {
     })
 
     describe('when onClear', ()=>{
-      it('should clear dailyExpense$.consumptions',()=>{
+      it('then clear dailyExpense$.consumptions',()=>{
         const budgetComponent: BudgetComponent = fixture.componentInstance;
         spyOn(budgetComponent.store, 'dispatch');
         budgetComponent.onClear();

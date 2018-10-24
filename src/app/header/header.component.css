@@ -1,6 +1,11 @@
+mat-icon{
+    cursor: pointer;
+}
+
 .application-title{
     padding-left: 5px;
     font-size: 20px;
+    cursor: pointer;
 }
 
 .fill-remaining-space {

@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
-  <mat-icon>account_balance</mat-icon>
-  <span class="application-title">Daily Account Log</span>
+  <mat-icon (click)="moveTo('/')">account_balance</mat-icon>
+  <span class="application-title" (click)="moveTo('/')">Daily Account Log</span>
   <!-- This fills the remaining space of the current row -->
   <span class="fill-remaining-space"></span>
-  <span>To be added</span>
+  <mat-icon (click)="moveTo('/config')">settings</mat-icon>
 </mat-toolbar>
