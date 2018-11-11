@@ -1,0 +1,19 @@
+.setting{
+  box-sizing: border-box;
+  min-width: 400px;
+  padding: 16px;
+}
+
+.setting-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.setting-form mat-form-field{
+  width: 100%;
+}
+
+.setting-form button {
+  margin-top: 30px;
+}

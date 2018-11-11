@@ -1,6 +1,7 @@
 <div class="budget">
 
-    <mat-form-field class="ngDatePicker">
+    <mat-form-field class="ngDatePicker" appearance="fill">
+        <mat-label>Choose a date</mat-label>
         <input style="display:inline" matInput [matDatepicker]="datepicker" placeholder="Choose a date" [value]="date.value">
         <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
         <mat-datepicker #datepicker></mat-datepicker>
@@ -24,7 +25,8 @@
 
     <span class="add-consumption">Add Consumption:</span>
     <form class="consumption-form" (ngSubmit)="onAdd()" [formGroup]="consumptionForm">
-        <mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Amount</mat-label>
             <input matInput
                 formControlName="amount" [errorStateMatcher]="matcher" placeholder="Amount" type="text">
             <mat-error *ngIf="consumptionForm.controls.amount.hasError('pattern') && !consumptionForm.controls.amount.hasError('required')">
@@ -34,7 +36,8 @@
                 Amount is <strong>required</strong>
             </mat-error>
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
             <input matInput
                 formControlName="desc" placeholder="Description" type="text">
         </mat-form-field>

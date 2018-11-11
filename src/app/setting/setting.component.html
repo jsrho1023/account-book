@@ -1,3 +1,42 @@
-<p>
-  This is the setting page!
-</p>
+<div class="setting">
+  <form class="setting-form" (ngSubmit)="onSave()" [formGroup]="settingForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Income</mat-label>
+      <input matInput formControlName="income" [errorStateMatcher]="matcher" placeholder="Income" type="text">
+      <mat-error *ngIf="settingForm.controls.income.hasError('pattern') && !settingForm.controls.income.hasError('required')">
+        <strong>Numbers</strong> only
+      </mat-error>
+      <mat-error *ngIf="settingForm.controls.income.hasError('required')">
+        Income is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Fixed Expense</mat-label>
+      <input matInput formControlName="expense" [errorStateMatcher]="matcher" placeholder="Fixed Expense" type="text">
+      <mat-error *ngIf="settingForm.controls.expense.hasError('pattern') && !settingForm.controls.expense.hasError('required')">
+        <strong>Numbers</strong> only
+      </mat-error>
+      <mat-error *ngIf="settingForm.controls.expense.hasError('required')">
+        Fixed Expense is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Saving Goal</mat-label>
+      <input matInput formControlName="saving" [errorStateMatcher]="matcher" placeholder="Saving Goal" type="text">
+      <mat-error *ngIf="settingForm.controls.saving.hasError('pattern') && !settingForm.controls.saving.hasError('required')">
+        <strong>Numbers</strong> only
+      </mat-error>
+      <mat-error *ngIf="settingForm.controls.saving.hasError('required')">
+        Saving Goal is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <div class="result">
+      <span>You are good to spend <strong>{{dailyBudget | currency:'KRW':'symbol'}}</strong> a day</span>
+    </div>
+
+    <button mat-raised-button color="primary" [disabled]="!settingForm.valid" type="submit">Save</button>
+  </form>
+</div>
