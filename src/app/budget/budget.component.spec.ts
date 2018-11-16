@@ -14,6 +14,7 @@ import { of, Observable } from 'rxjs';
 import { DailyExpense } from '../domain/dailyExpense';
 import { Consumption } from '../domain/consumption';
 import { AddConsumption, ClearConsumptions } from './budget.actions';
+import { CalendarComponent } from '../calendar/calendar.component';
 
 describe('BudgetComponent', () => {
   let component: BudgetComponent;
@@ -22,7 +23,7 @@ describe('BudgetComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BudgetComponent],
+      declarations: [BudgetComponent, CalendarComponent],
       imports: [BrowserModule,
         FormsModule,
         BrowserAnimationsModule,
