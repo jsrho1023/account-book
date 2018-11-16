@@ -19,6 +19,7 @@ import { SettingComponent } from './setting/setting.component';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin'
 import { DailyExpenseState } from './budget/budget.state';
+import { CalendarComponent } from './calendar/calendar.component';
 
 const appRoutes : Routes = [
   { path: '', component: BudgetComponent },
@@ -30,7 +31,8 @@ const appRoutes : Routes = [
     AppComponent,
     BudgetComponent,
     HeaderComponent,
-    SettingComponent
+    SettingComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,

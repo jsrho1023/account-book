@@ -1,11 +1,6 @@
 <div class="budget">
 
-    <mat-form-field class="ngDatePicker" appearance="fill">
-        <mat-label>Choose a date</mat-label>
-        <input style="display:inline" matInput [matDatepicker]="datepicker" placeholder="Choose a date" [value]="date.value">
-        <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
-        <mat-datepicker #datepicker></mat-datepicker>
-    </mat-form-field>
+    <app-calendar [date]="date"></app-calendar>
 
     <div class="budget-balance">
         <div class="balance-total">

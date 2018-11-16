@@ -23,7 +23,7 @@ export class ConsumptionErrorStateMatcher implements ErrorStateMatcher {
 export class BudgetComponent implements OnInit {
     budget: number = 10000;
     displayedColumns = ['amount', 'desc'];
-    date: FormControl;
+    date: Date = new Date();
 
     dataSource: MatTableDataSource<Consumption>;
     balance: number;
@@ -46,7 +46,6 @@ export class BudgetComponent implements OnInit {
 
     ngOnInit() {
         this.balance = this.budget;
-        this.date = new FormControl(new Date());
 
         this.dailyExpense$
             .subscribe((dailyExpense) => {

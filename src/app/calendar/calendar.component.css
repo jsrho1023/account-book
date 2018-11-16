@@ -1,0 +1,37 @@
+.calendar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.day-of-week {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  color: rgba(0,0,0,.5);
+}
+
+.day-of-week div {
+  width: 100%;
+  height: 30px; 
+  text-align: center;
+  padding: 3px;
+}
+
+.week {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.day {
+  width: 10%;
+  line-height: 30px;
+  text-align: center;
+  padding: 5px;
+}
+
+.day.active {
+  background-color: skyblue;
+}
