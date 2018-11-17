@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { BrowserModule } from '@angular/platform-browser';
 import { CalendarComponent } from './calendar.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 describe('CalendarComponent', () => {
   let component: CalendarComponent;
@@ -8,7 +9,10 @@ describe('CalendarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CalendarComponent]
+      declarations: [CalendarComponent],
+      imports: [BrowserModule,
+        FormsModule,
+        ReactiveFormsModule]
     })
       .compileComponents();
   }));
@@ -23,6 +27,22 @@ describe('CalendarComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  fdescribe('Render', () => {
+    describe('when loaded', () => {
+      it('then show calendar including today', ()=>{
+        const calendarTemplate : HTMLElement = fixture.nativeElement;
+        const month: HTMLSelectElement = calendarTemplate.querySelector('.select-month');
+        expect(month.selectedIndex).toBe(component.date.getMonth());
+      })
+
+      it('then show today date as active', ()=>{
+        const calendarTemplate : HTMLElement = fixture.nativeElement;
+        const today: HTMLSelectElement = calendarTemplate.querySelector('.day.active');
+        expect(today.textContent).toBe(component.date.getDate().toString());
+      })
+    })
+  })
 
   describe('Method', () => {
     describe('when getFirstDayOfWeek', () => {

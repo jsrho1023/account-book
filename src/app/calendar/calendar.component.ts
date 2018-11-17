@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-calendar',
@@ -9,13 +10,29 @@ export class CalendarComponent implements OnInit {
 
   @Input('date') date: Date;
 
-  weeks = [];
+  months = [
+    {name: 'January', value: 0},
+    {name: 'Febrary', value: 1},
+    {name: 'March', value: 2},
+    {name: 'April', value: 3},
+    {name: 'May', value: 4},
+    {name: 'June', value: 5},
+    {name: 'July', value: 6},
+    {name: 'August', value: 7},
+    {name: 'September', value: 8},
+    {name: 'October', value: 9},
+    {name: 'November', value: 10},
+    {name: 'December', value: 11}
+  ];
+  weeks = [];  
+  month: FormControl = new FormControl();
   selectedDay: number;
 
   constructor() { }
 
   ngOnInit() {
     this.selectedDay = this.date.getDate();
+    this.month.setValue(this.date.getMonth());
     const dayOfWeek = this.date.getDay();
 
     const firstDayOfWeek = this.getFirstDayOfWeek(this.selectedDay, dayOfWeek);
