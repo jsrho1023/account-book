@@ -4,36 +4,49 @@
     padding: 16px;
 }
 
+.budget-balance {
+    display: flex;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #e8effa;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.budget-balance div {
+    width: 30%;
+    height: 60px;
+    padding: 10px;
+    background-color: white;
+    text-align: center;
+}
+
+.budget-balance .symbol {
+    color: rgba(0,0,0,0.5);
+}
+
 .balance-total{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    font-size: 19px;
+    font-size: 15px;
 }
 
 .balance-title{
     margin-bottom: 5px;
-    color: rgba(0,0,0,0.6);
-}
-
-.balance-amount{
-    margin-left: 50px;
+    color: #3c70e8;
 }
 
 .budget-total{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    font-size: 19px;
+    font-size: 15px;
 }
 
 .budget-title{
     margin-bottom: 5px;
-    color: rgba(0,0,0,0.6);
-}
-
-.budget-amount{
-    margin-left: 50px;
+    color: #3c70e8;
 }
 
 .division-line {
@@ -51,34 +64,26 @@
     display: block;
     min-width: 135px;
     margin-top: 10px;
+    font-size: 15px;
     color: rgba(0,0,0,0.5);
-}
-
-.consumption-form {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 10px;
-}
-
-.consumption-form mat-form-field {
-    width: 30%;
-    margin-right: 10px;    
-}
-
-.consumption-form button {
-    width: 30%;
-    min-width: 100px;
 }
 
 .consumption-list {
     margin-top: 5px;
     margin-bottom: 5px;
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .consumption-list-title {
-    color: rgba(0,0,0,0.5);
+    color: #3c70e8;
+    font-size: 15px;
+}
+
+.consumption-list-add {
+    color: #3c70e8;
 }
 
 .action-button-box{
@@ -86,17 +91,4 @@
     align-items: baseline;
     justify-content: space-between;
     margin-top: 20px;
-}
-
-@media screen and (min-width: 600px) {
-    .budget-balance {
-        display: flex;
-        flex-direction: row;
-        border-bottom: 1px solid rgba(0,0,0,.2);
-        justify-content: space-between;
-    }
-
-    .division-line {
-        display: none;
-    }
 }

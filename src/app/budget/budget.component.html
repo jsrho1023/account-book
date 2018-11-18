@@ -3,58 +3,38 @@
     <app-calendar [date]="date"></app-calendar>
 
     <div class="budget-balance">
-        <div class="balance-total">
+
+        <div class="balance-total mat-elevation-z1">
             <span class="balance-title">Balance</span>
-            <span class="balance-amount" [ngStyle]="{'color':balance<=0?'red':'black'}">{{balance | currency:'KRW':'symbol'}}</span>
+            <span class="balance-amount" [ngStyle]="{'color':balance<=0?'red':'black'}">{{balance |
+                currency:'KRW':'':'1.0-3':'ko'}}</span>
+            <span class="symbol">won</span>
         </div>
-
-        <div class="division-line"></div>
-
-        <div class="budget-total">
+        <div class="budget-total mat-elevation-z1">
             <span class="budget-title">Today's Budget</span>
-            <span class="budget-amount" *ngIf="budget.toString()!==''">{{budget | currency:'KRW':'symbol'}}</span>
+            <span class="budget-amount" *ngIf="budget.toString()!==''">{{budget | currency:'KRW':'':'1.0-3':'ko'}}</span>
+            <span class="symbol">won</span>
         </div>
-
-        <div class="division-line"></div>
     </div>
 
-    <span class="add-consumption">Add Consumption:</span>
-    <form class="consumption-form" (ngSubmit)="onAdd()" [formGroup]="consumptionForm">
-        <mat-form-field appearance="fill">
-            <mat-label>Amount</mat-label>
-            <input matInput
-                formControlName="amount" [errorStateMatcher]="matcher" placeholder="Amount" type="text">
-            <mat-error *ngIf="consumptionForm.controls.amount.hasError('pattern') && !consumptionForm.controls.amount.hasError('required')">
-                <strong>Numbers</strong> only
-            </mat-error>
-            <mat-error *ngIf="consumptionForm.controls.amount.hasError('required')">
-                Amount is <strong>required</strong>
-            </mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>Description</mat-label>
-            <input matInput
-                formControlName="desc" placeholder="Description" type="text">
-        </mat-form-field>
-        <button [disabled]="!consumptionForm.valid" mat-stroked-button color="accent" type="submit">Add</button>
-    </form>
-
-    <div class="consumption-list">
+    <div class="consumption-list mat-elevation-z1">
         <span class="consumption-list-title">Today's Consumptions</span>
+        <mat-icon class="consumption-list-add">add_box</mat-icon>
     </div>
 
     <div class="mat-elevation-z1">
         <mat-table [dataSource]="dataSource">
-            <!-- Amount Column -->
-            <ng-container matColumnDef="amount">
-                <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
-                <mat-cell *matCellDef="let consumption"> {{consumption.amount | currency:'KRW'}} </mat-cell>
-            </ng-container>
-
             <!-- Description Column -->
             <ng-container matColumnDef="desc">
                 <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
                 <mat-cell *matCellDef="let consumption"> {{consumption.desc}} </mat-cell>
+            </ng-container>
+
+            <!-- Amount Column -->
+            <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                <mat-cell *matCellDef="let consumption"> {{consumption.amount | currency:'KRW':'won':'1.0-3':'ko'}}
+                </mat-cell>
             </ng-container>
 
             <!-- Row Template -->

@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BudgetComponent } from './budget.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -15,6 +16,10 @@ import { DailyExpense } from '../domain/dailyExpense';
 import { Consumption } from '../domain/consumption';
 import { AddConsumption, ClearConsumptions } from './budget.actions';
 import { CalendarComponent } from '../calendar/calendar.component';
+import { registerLocaleData } from '@angular/common';
+import localeKR from '@angular/common/locales/ko';
+
+registerLocaleData(localeKR, 'ko');
 
 describe('BudgetComponent', () => {
   let component: BudgetComponent;
@@ -33,6 +38,7 @@ describe('BudgetComponent', () => {
         MatTableModule,
         MatDatepickerModule,
         MatNativeDateModule,
+        MatIconModule,
         NgxsModule.forRoot([
           DailyExpenseState
         ])]

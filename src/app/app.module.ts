@@ -19,6 +19,12 @@ import { NgxsRouterPluginModule } from '@ngxs/router-plugin'
 import { DailyExpenseState } from './budget/budget.state';
 import { CalendarComponent } from './calendar/calendar.component';
 
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeKR from '@angular/common/locales/ko';
+
+registerLocaleData(localeKR, 'ko');
+
 const appRoutes : Routes = [
   { path: '', component: BudgetComponent },
   { path: 'config', component: SettingComponent }
@@ -47,7 +53,7 @@ const appRoutes : Routes = [
     RouterModule.forRoot(appRoutes),
     NgxsRouterPluginModule.forRoot()
   ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: 'ko' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -14,13 +14,13 @@
 
 .month {
   width: 100%;
-  background-color: #3f51b5;
+  background-color: #3c70e8;
 }
 
 .select-month {
   height: 100%;
   padding: 10px;
-  background-color: #3f51b5;
+  background-color: #3c70e8;
   color: white;
   border: none;
   outline: none;
@@ -57,5 +57,5 @@
 }
 
 .day.active {
-  background-color: skyblue;
+  background-color: #3c70e8;
 }

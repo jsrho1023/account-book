@@ -28,7 +28,7 @@ describe('CalendarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  fdescribe('Render', () => {
+  describe('Render', () => {
     describe('when loaded', () => {
       it('then show calendar including today', ()=>{
         const calendarTemplate : HTMLElement = fixture.nativeElement;

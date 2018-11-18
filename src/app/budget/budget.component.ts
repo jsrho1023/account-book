@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { Consumption } from '../domain/consumption';
@@ -22,7 +22,7 @@ export class ConsumptionErrorStateMatcher implements ErrorStateMatcher {
 })
 export class BudgetComponent implements OnInit {
     budget: number = 10000;
-    displayedColumns = ['amount', 'desc'];
+    displayedColumns = ['desc', 'amount'];
     date: Date = new Date();
 
     dataSource: MatTableDataSource<Consumption>;
