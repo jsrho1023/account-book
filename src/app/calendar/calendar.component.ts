@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { isNumber } from 'util';
 
 @Component({
   selector: 'app-calendar',
@@ -27,10 +28,12 @@ export class CalendarComponent implements OnInit {
   weeks = [];  
   month: FormControl = new FormControl();
   selectedDay: number;
+  today: number;
 
   constructor() { }
 
   ngOnInit() {
+    this.today = new Date().getDate();
     this.selectedDay = this.date.getDate();
     this.month.setValue(this.date.getMonth());
     const dayOfWeek = this.date.getDay();
@@ -77,5 +80,11 @@ export class CalendarComponent implements OnInit {
     let firstDayOfWeek = dayOfWeek - diff;
 
     return firstDayOfWeek > 0 ? firstDayOfWeek : firstDayOfWeek + 7;
+  }
+
+  selectDay(day: number){    
+    if(isNumber(day)){
+      this.selectedDay = day;
+    }    
   }
 }

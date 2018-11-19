@@ -54,8 +54,14 @@
   width: 10%;
   text-align: center;
   padding: 5px;
+  cursor: pointer;
 }
 
 .day.active {
   background-color: #3c70e8;
+}
+
+.day.today {
+  font-weight: bold;
+  text-decoration: underline;
 }

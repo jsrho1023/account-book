@@ -14,6 +14,6 @@
     <div>Sat</div>
   </div>
   <div class="week" *ngFor="let week of weeks">
-    <div class="day" [class.active]="selectedDay===day" *ngFor="let day of week.days">{{day}}</div>
+    <div class="day" [class.active]="selectedDay===day" [class.today]="today===day" *ngFor="let day of week.days" (click)="selectDay(day)">{{day}}</div>
   </div>
 </div>
