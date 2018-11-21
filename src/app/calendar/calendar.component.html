@@ -1,6 +1,6 @@
 <div class="calendar mat-elevation-z1">
   <div class="month">
-    <select class="select-month" [formControl]="month">
+    <select class="select-month" [formControl]="month" (change)="selectMonth(month)">
       <option *ngFor="let month of months" [ngValue]="month.value">{{month.name}}</option>
     </select>
   </div>
@@ -14,6 +14,10 @@
     <div>Sat</div>
   </div>
   <div class="week" *ngFor="let week of weeks">
-    <div class="day" [class.active]="selectedDay===day" [class.today]="today===day" *ngFor="let day of week.days" (click)="selectDay(day)">{{day}}</div>
+    <div *ngFor="let day of week.days" 
+         class="day" 
+         [class.active]="isSelectedDate(day)" 
+         [class.today]="isToday(day)" 
+         (click)="selectDay(day)">{{day}}</div>
   </div>
 </div>

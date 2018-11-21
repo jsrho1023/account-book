@@ -46,6 +46,9 @@ describe('CalendarComponent', () => {
         expect(component.selectDay).toHaveBeenCalledWith(2);
       })      
     })
+    describe('when change month', ()=>{
+      // ToDo
+    })
   })
 
   describe('Render', () => {
@@ -61,7 +64,7 @@ describe('CalendarComponent', () => {
         fixture.detectChanges();
         const calendarTemplate : HTMLElement = fixture.nativeElement;
         const selectedDay: HTMLSelectElement = calendarTemplate.querySelector('.day.active');
-        expect(selectedDay.textContent).toBe("5");
+        expect(selectedDay.textContent).toBe('5');
       })
 
       it('then show today date as today', ()=>{
@@ -78,6 +81,16 @@ describe('CalendarComponent', () => {
         const firstDayOfWeek = fixture.componentInstance.getFirstDayOfWeek(16, 5);
         expect(firstDayOfWeek).toBe(4)
       })
+
+      it('with 21, 6(Saturday) then return 0(Sunday)', () => {
+        const firstDayOfWeek = fixture.componentInstance.getFirstDayOfWeek(21, 6);
+        expect(firstDayOfWeek).toBe(0)
+      })
+
+      it('with 8, 6(Saturday) then return 6(Saturday)', () => {
+        const firstDayOfWeek = fixture.componentInstance.getFirstDayOfWeek(8, 6);
+        expect(firstDayOfWeek).toBe(6)
+      })
     })
     
     describe('when call setCalendarDate', () => {
@@ -88,6 +101,14 @@ describe('CalendarComponent', () => {
           return sum + date.days.length;
         }, 0)).toBe(42);
       })
+
+      it('with 1 is Sunday, having 30 days then return data array with 5 weeks, 35 days', () => {
+        const calendarDate = fixture.componentInstance.setCalendarDate(0, 30);
+        expect(calendarDate.length).toBe(5);
+        expect(calendarDate.reduce((sum, date)=>{
+          return sum + date.days.length;
+        }, 0)).toBe(35);
+      })
     })
 
     describe('when call selectDay', ()=>{
@@ -96,6 +117,25 @@ describe('CalendarComponent', () => {
         calendarComponent.selectDay(4);
         expect(calendarComponent.selectedDay).toBe(4);
       })
+
+      it('with emptyString then do nothing', ()=>{
+        const calendarComponent : CalendarComponent = fixture.componentInstance;
+        calendarComponent.selectedDay = 5
+        calendarComponent.selectDay('');
+        expect(calendarComponent.selectedDay).toBe(5);
+      })
+    })
+
+    describe('when call setSelectedDate', () =>{
+      // ToDo
+    })
+
+    describe('when call isToday', () =>{
+      // ToDo
+    })
+
+    describe('when call isSelectedDate', () =>{
+      // ToDo
     })
   })
 });

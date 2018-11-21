@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { isNumber } from 'util';
 
@@ -10,6 +10,7 @@ import { isNumber } from 'util';
 export class CalendarComponent implements OnInit {
 
   @Input('date') date: Date;
+  @Output('change') change: EventEmitter<Date> = new EventEmitter<Date>();
 
   months = [
     {name: 'January', value: 0},
@@ -27,20 +28,19 @@ export class CalendarComponent implements OnInit {
   ];
   weeks = [];  
   month: FormControl = new FormControl();
+  selectedMonth: number;
   selectedDay: number;
-  today: number;
+  todayDate: Date = new Date();
 
   constructor() { }
 
   ngOnInit() {
-    this.today = new Date().getDate();
-    this.selectedDay = this.date.getDate();
-    this.month.setValue(this.date.getMonth());
+    this.setSelectedDate();
+    this.month.setValue(this.selectedMonth);
+    
     const dayOfWeek = this.date.getDay();
-
     const firstDayOfWeek = this.getFirstDayOfWeek(this.selectedDay, dayOfWeek);
     const lastDay = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate();
-
     this.weeks = this.setCalendarDate(firstDayOfWeek, lastDay);
   }
 
@@ -77,14 +77,35 @@ export class CalendarComponent implements OnInit {
   getFirstDayOfWeek(day: number, dayOfWeek: number): number {
     const diff = day % 7 - 1;
 
-    let firstDayOfWeek = dayOfWeek - diff;
+    let firstDayOfWeek = (dayOfWeek - diff) % 7;
 
-    return firstDayOfWeek > 0 ? firstDayOfWeek : firstDayOfWeek + 7;
+    return firstDayOfWeek >= 0 ? firstDayOfWeek : firstDayOfWeek + 7;
   }
 
-  selectDay(day: number){    
+  selectMonth(month: {name: string, value: number}){
+    this.date.setMonth(month.value);
+    const dayOfWeek = this.date.getDay();
+    const firstDayOfWeek = this.getFirstDayOfWeek(this.selectedDay, dayOfWeek);
+    const lastDay = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate();
+    this.weeks = this.setCalendarDate(firstDayOfWeek, lastDay);
+  }
+
+  selectDay(day){    
     if(isNumber(day)){
       this.selectedDay = day;
     }    
+  }
+
+  setSelectedDate(){
+    this.selectedMonth = this.date.getMonth();
+    this.selectedDay = this.date.getDate();
+  }
+  
+  isToday(day){
+    return this.month.value === this.todayDate.getMonth() && this.todayDate.getDate() === day;
+  }
+
+  isSelectedDate(day){
+    return this.month.value === this.selectedMonth && this.selectedDay === day;
   }
 }
