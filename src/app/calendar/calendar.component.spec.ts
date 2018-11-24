@@ -20,7 +20,7 @@ describe('CalendarComponent', () => {
   beforeEach(() => {    
     fixture = TestBed.createComponent(CalendarComponent);    
     component = fixture.componentInstance;
-    component.date = new Date();
+    component.date = new Date('2018-11-24');
     fixture.detectChanges();
   });
 
@@ -113,29 +113,42 @@ describe('CalendarComponent', () => {
 
     describe('when call selectDay', ()=>{
       it('with 4 then set selectedDay as 4', ()=>{
-        const calendarComponent : CalendarComponent = fixture.componentInstance;
-        calendarComponent.selectDay(4);
-        expect(calendarComponent.selectedDay).toBe(4);
+        component.selectDay(4);
+        expect(component.selectedDay).toBe(4);
       })
 
       it('with emptyString then do nothing', ()=>{
-        const calendarComponent : CalendarComponent = fixture.componentInstance;
-        calendarComponent.selectedDay = 5
-        calendarComponent.selectDay('');
-        expect(calendarComponent.selectedDay).toBe(5);
+        component.selectedDay = 5
+        component.selectDay('');
+        expect(component.selectedDay).toBe(5);
       })
     })
 
     describe('when call setSelectedDate', () =>{
-      // ToDo
+      it('given @input date 11/24, then set selectedMonth, Day to @input date', ()=>{        
+        expect(component.selectedMonth).toBe(10);
+        expect(component.selectedDay).toBe(24);
+      })
     })
 
     describe('when call isToday', () =>{
-      // ToDo
+      it('given same day with today, then return true', ()=>{
+        expect(component.isToday(24)).toBeTruthy();
+      })
+
+      it('given other day with today, then return false', ()=>{
+        expect(component.isToday(21)).toBeFalsy();
+      })      
     })
 
     describe('when call isSelectedDate', () =>{
-      // ToDo
+      it('given same day with selectedDay, then return true', ()=>{
+        expect(component.isSelectedDate(24)).toBeTruthy();
+      })     
+
+      it('given other day with selectedDay, then return false', ()=>{
+        expect(component.isSelectedDate(21)).toBeFalsy();
+      })     
     })
   })
 });

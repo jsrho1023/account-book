@@ -92,6 +92,7 @@ export class CalendarComponent implements OnInit {
 
   selectDay(day){    
     if(isNumber(day)){
+      this.selectedMonth = this.month.value;
       this.selectedDay = day;
     }    
   }
