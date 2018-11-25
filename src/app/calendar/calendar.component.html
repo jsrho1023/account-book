@@ -1,6 +1,6 @@
-<div class="calendar mat-elevation-z1">
+<div class="calendar">
   <div class="month">
-    <select class="select-month" [formControl]="month" (change)="selectMonth(month)">
+    <select class="select-month" [formControl]="monthSelect" (change)="selectMonth()">
       <option *ngFor="let month of months" [ngValue]="month.value">{{month.name}}</option>
     </select>
   </div>

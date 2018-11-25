@@ -10,7 +10,7 @@ import { isNumber } from 'util';
 export class CalendarComponent implements OnInit {
 
   @Input('date') date: Date;
-  @Output('change') change: EventEmitter<Date> = new EventEmitter<Date>();
+  @Output('dateChange') dateChange: EventEmitter<Date> = new EventEmitter<Date>();
 
   months = [
     {name: 'January', value: 0},
@@ -27,7 +27,7 @@ export class CalendarComponent implements OnInit {
     {name: 'December', value: 11}
   ];
   weeks = [];  
-  month: FormControl = new FormControl();
+  monthSelect: FormControl = new FormControl();
   selectedMonth: number;
   selectedDay: number;
   todayDate: Date = new Date();
@@ -36,7 +36,7 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit() {
     this.setSelectedDate();
-    this.month.setValue(this.selectedMonth);
+    this.monthSelect.setValue(this.selectedMonth);
     
     const dayOfWeek = this.date.getDay();
     const firstDayOfWeek = this.getFirstDayOfWeek(this.selectedDay, dayOfWeek);
@@ -82,8 +82,8 @@ export class CalendarComponent implements OnInit {
     return firstDayOfWeek >= 0 ? firstDayOfWeek : firstDayOfWeek + 7;
   }
 
-  selectMonth(month: {name: string, value: number}){
-    this.date.setMonth(month.value);
+  selectMonth(){
+    this.date.setMonth(this.monthSelect.value);
     const dayOfWeek = this.date.getDay();
     const firstDayOfWeek = this.getFirstDayOfWeek(this.selectedDay, dayOfWeek);
     const lastDay = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate();
@@ -92,9 +92,10 @@ export class CalendarComponent implements OnInit {
 
   selectDay(day){    
     if(isNumber(day)){
-      this.selectedMonth = this.month.value;
+      this.selectedMonth = this.monthSelect.value;
       this.selectedDay = day;
-    }    
+      this.dateChange.emit(new Date(this.todayDate.getFullYear(), this.monthSelect.value, day));
+    }
   }
 
   setSelectedDate(){
@@ -103,10 +104,10 @@ export class CalendarComponent implements OnInit {
   }
   
   isToday(day){
-    return this.month.value === this.todayDate.getMonth() && this.todayDate.getDate() === day;
+    return this.monthSelect.value === this.todayDate.getMonth() && this.todayDate.getDate() === day;
   }
 
   isSelectedDate(day){
-    return this.month.value === this.selectedMonth && this.selectedDay === day;
+    return this.monthSelect.value === this.selectedMonth && this.selectedDay === day;
   }
 }

@@ -1,14 +1,13 @@
 .budget{
     box-sizing: border-box;
     min-width: 400px;
-    padding: 16px;
+    background-color: #e8effa;
 }
 
 .budget-balance {
     display: flex;
     padding-top: 20px;
     padding-bottom: 20px;
-    background-color: #e8effa;
     flex-direction: row;
     justify-content: space-evenly;
 }
@@ -69,11 +68,17 @@
 }
 
 .consumption-list {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    height: 30px;
     display: flex;
+    flex-direction: column;
+}
+
+.consumption-list-header{
+    display: flex;
+    padding: 0 16px;
+    line-height: 50px;
+    flex-direction: row;
     justify-content: space-between;
+    background-color: white;
     align-items: center;
 }
 
@@ -90,5 +95,6 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-top: 20px;
+    background-color: white;
+    padding: 20px 16px;
 }

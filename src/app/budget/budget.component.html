@@ -1,9 +1,8 @@
 <div class="budget">
 
-    <app-calendar [date]="date"></app-calendar>
+    <app-calendar [date]="date" (dateChange)="onDateChange($event)"></app-calendar>
 
     <div class="budget-balance">
-
         <div class="balance-total mat-elevation-z1">
             <span class="balance-title">Balance</span>
             <span class="balance-amount" [ngStyle]="{'color':balance<=0?'red':'black'}">
@@ -18,13 +17,12 @@
         </div>
     </div>
 
-    <div class="consumption-list mat-elevation-z1">
-        <span class="consumption-list-title">Today's Consumptions</span>
-        <mat-icon class="consumption-list-add">add_box</mat-icon>
-    </div>
-
-    <div class="mat-elevation-z1">
-        <mat-table [dataSource]="dataSource">
+    <div class="consumption-list">
+        <div class="consumption-list-header">
+            <span class="consumption-list-title">Today's Consumptions</span>
+            <mat-icon class="consumption-list-add">add_box</mat-icon>
+        </div>        
+        <mat-table class="consumption-list-table" [dataSource]="dataSource">
             <!-- Description Column -->
             <ng-container matColumnDef="desc">
                 <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>

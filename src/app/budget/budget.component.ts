@@ -87,6 +87,10 @@ export class BudgetComponent implements OnInit {
         this.canClear = false;
     }
 
+    onDateChange(date){
+        console.log(date);
+    }
+
     onSave() {
         // send data to server
     }

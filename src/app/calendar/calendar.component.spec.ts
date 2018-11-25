@@ -20,36 +20,13 @@ describe('CalendarComponent', () => {
   beforeEach(() => {    
     fixture = TestBed.createComponent(CalendarComponent);    
     component = fixture.componentInstance;
-    component.date = new Date('2018-11-24');
+    component.date = new Date(2018,10,24);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  describe('Event', ()=>{
-    describe('when click day', ()=>{
-      it('with "" then call selectDay method with empty string', ()=>{
-        spyOn(component, 'selectDay');
-        const calendarTemplate : HTMLElement = fixture.nativeElement;        
-        const element : HTMLButtonElement = calendarTemplate.querySelectorAll('.day').item(3) as HTMLButtonElement;
-        element.click();
-        expect(component.selectDay).toHaveBeenCalledWith('');
-      })      
-
-      it('with valid number then call selectDay method with clicked number', ()=>{
-        spyOn(component, 'selectDay');
-        const calendarTemplate : HTMLElement = fixture.nativeElement;        
-        const element : HTMLButtonElement = calendarTemplate.querySelectorAll('.day').item(5) as HTMLButtonElement;
-        element.click();
-        expect(component.selectDay).toHaveBeenCalledWith(2);
-      })      
-    })
-    describe('when change month', ()=>{
-      // ToDo
-    })
-  })
 
   describe('Render', () => {
     describe('when loaded', () => {
@@ -70,9 +47,40 @@ describe('CalendarComponent', () => {
       it('then show today date as today', ()=>{
         const calendarTemplate : HTMLElement = fixture.nativeElement;
         const today: HTMLSelectElement = calendarTemplate.querySelector('.day.today');
-        expect(today.textContent).toBe(component.date.getDate().toString());
+        expect(today.textContent).toBe(component.todayDate.getDate().toString());
       })
     })
+  })
+
+  describe('Event', ()=>{
+    describe('when click day', ()=>{
+      it('with "" then call selectDay method with empty string', ()=>{
+        spyOn(component, 'selectDay');
+        const calendarTemplate : HTMLElement = fixture.nativeElement;        
+        const element : HTMLButtonElement = calendarTemplate.querySelectorAll('.day').item(3) as HTMLButtonElement;
+        element.click();
+        expect(component.selectDay).toHaveBeenCalledWith('');
+      })      
+
+      it('with valid number then call selectDay method with clicked number', ()=>{
+        spyOn(component, 'selectDay');        
+        const calendarTemplate : HTMLElement = fixture.nativeElement;        
+        const element : HTMLButtonElement = calendarTemplate.querySelectorAll('.day').item(5) as HTMLButtonElement;
+        element.click();
+        expect(component.selectDay).toHaveBeenCalledWith(2);        
+      })      
+    })
+    describe('when change month', ()=>{
+      it('with October then call selectMonth with {name: "October", value: 9}', ()=>{
+        spyOn(component, 'selectMonth');
+        const calendarTemplate: HTMLElement = fixture.nativeElement;
+        const element: HTMLSelectElement = calendarTemplate.querySelector('.select-month') as HTMLSelectElement;
+        element.selectedIndex = 9;
+        element.dispatchEvent(new Event('change'))
+        fixture.detectChanges();
+        expect(component.selectMonth).toHaveBeenCalled();
+      })
+    })    
   })
 
   describe('Method', () => {
@@ -112,15 +120,26 @@ describe('CalendarComponent', () => {
     })
 
     describe('when call selectDay', ()=>{
-      it('with 4 then set selectedDay as 4', ()=>{
+      it('with 4 then set selectedDay as 4, and emit dateChange event', ()=>{
+        spyOn(component.dateChange, 'emit');
         component.selectDay(4);
         expect(component.selectedDay).toBe(4);
+        expect(component.dateChange.emit).toHaveBeenCalledWith(new Date(2018,10,4));
       })
 
       it('with emptyString then do nothing', ()=>{
         component.selectedDay = 5
         component.selectDay('');
         expect(component.selectedDay).toBe(5);
+      })
+    })
+
+    describe('when call selectMonth', ()=>{
+      it('given october selected, then set month, redraw calendar', ()=>{
+        spyOn(component, 'setCalendarDate');
+        component.monthSelect.setValue(9);
+        component.selectMonth();
+        expect(component.setCalendarDate).toHaveBeenCalledWith(1, 31);
       })
     })
 
@@ -133,11 +152,11 @@ describe('CalendarComponent', () => {
 
     describe('when call isToday', () =>{
       it('given same day with today, then return true', ()=>{
-        expect(component.isToday(24)).toBeTruthy();
+        expect(component.isToday(new Date().getDate())).toBeTruthy();
       })
 
       it('given other day with today, then return false', ()=>{
-        expect(component.isToday(21)).toBeFalsy();
+        expect(component.isToday(new Date().getDate()-1)).toBeFalsy();
       })      
     })
 
