@@ -1,7 +1,7 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Action, State, StateContext } from '@ngxs/store';
 import { DailyExpense } from '../domain/dailyExpense';
-import { Consumption } from '../domain/consumption';
-import { AddConsumption, ClearConsumptions } from './budget.actions';
+import { AddConsumption, ClearConsumptions, SaveExpense } from './budget.actions';
 
 const dailyExpenseDefault: DailyExpense = {
     datetime: new Date(),
@@ -13,6 +13,9 @@ const dailyExpenseDefault: DailyExpense = {
     defaults: dailyExpenseDefault
 })
 export class DailyExpenseState {
+
+    constructor(private http: HttpClient){}
+
     @Action(AddConsumption)
     addConsumption(context: StateContext<DailyExpense>, action:AddConsumption){
         const state = context.getState();
@@ -29,5 +32,15 @@ export class DailyExpenseState {
     ClearConsumptions(context: StateContext<DailyExpense>){
         const state = context.getState();
         context.setState(dailyExpenseDefault);
+    }
+
+    @Action(SaveExpense)
+    SaveExpense(context: StateContext<DailyExpense>){
+        const state = context.getState()
+        const date = state.datetime.toISOString().slice(0,10)
+        this.http.post<DailyExpense>('http://localhost:9999/api/expense/day/' + date, context.getState())
+            .subscribe(expense => {
+                console.log(expense);
+            });
     }
 }

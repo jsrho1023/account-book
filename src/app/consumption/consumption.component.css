@@ -1,0 +1,9 @@
+.action-button-area {
+  display: flex;
+  justify-content: space-between;
+}
+
+.action-button-area button:first-of-type{
+  border-color: rgba(0,0,0,.8);
+  color: rgba(0,0,0,.8);
+}

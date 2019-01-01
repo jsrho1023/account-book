@@ -1,19 +1,11 @@
-import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
-import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { MatTableDataSource, MatDialog } from '@angular/material';
 import { Consumption } from '../domain/consumption';
 import { Store, Select } from "@ngxs/store";
 import { Observable } from 'rxjs';
-import { AddConsumption, ClearConsumptions } from './budget.actions';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { AddConsumption, ClearConsumptions, SaveExpense } from './budget.actions';
 import { DailyExpense } from '../domain/dailyExpense';
-
-/** Error when invalid control is dirty, touched, or submitted. */
-export class ConsumptionErrorStateMatcher implements ErrorStateMatcher {
-    isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-        return !!(control && control.invalid && (control.dirty || control.touched || (form && form.touched)));
-    }
-}
+import { ConsumptionComponent } from '../consumption/consumption.component';
 
 @Component({
     selector: 'app-budget',
@@ -22,7 +14,7 @@ export class ConsumptionErrorStateMatcher implements ErrorStateMatcher {
 })
 export class BudgetComponent implements OnInit {
     budget: number = 10000;
-    displayedColumns = ['desc', 'amount'];
+    displayedColumns = ['amount', 'desc'];
     date: Date = new Date();
 
     dataSource: MatTableDataSource<Consumption>;
@@ -30,19 +22,11 @@ export class BudgetComponent implements OnInit {
 
     canClear: boolean = false;
 
-    consumptionForm = new FormGroup({
-        amount: new FormControl('', [
-            Validators.required,
-            Validators.pattern(/^\d+$/)
-        ]),
-        desc: new FormControl('')
-    });
-
-    matcher = new ConsumptionErrorStateMatcher();
+    @ViewChild("save") saveButton: ElementRef;
 
     @Select(state => state.dailyExpense) dailyExpense$: Observable<DailyExpense>;
 
-    constructor(public store: Store) { }
+    constructor(public store: Store, private dialog: MatDialog) { }
 
     ngOnInit() {
         this.balance = this.budget;
@@ -75,11 +59,18 @@ export class BudgetComponent implements OnInit {
     }
 
     onAdd() {
-        let amount: number = Number(this.consumptionForm.controls.amount.value);
-        let desc: string = this.consumptionForm.controls.desc.value;
-        this.addConsumption(new Consumption(amount, desc));
-        this.consumptionForm.reset();
-        this.consumptionForm.setErrors(null);
+        const dialogRef = this.dialog.open(ConsumptionComponent, {
+            width: '250px',
+            data: { amount: 0, desc: "" }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                let amount: number = Number(result.amount);
+                let desc: string = result.desc;
+                this.addConsumption(new Consumption(amount, desc));
+            }
+        });
     }
 
     onClear() {
@@ -87,11 +78,11 @@ export class BudgetComponent implements OnInit {
         this.canClear = false;
     }
 
-    onDateChange(date){
+    onDateChange(date) {
         console.log(date);
     }
 
     onSave() {
-        // send data to server
+        this.store.dispatch(new SaveExpense());
     }
 }

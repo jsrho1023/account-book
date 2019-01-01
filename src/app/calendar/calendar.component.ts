@@ -28,6 +28,7 @@ export class CalendarComponent implements OnInit {
   ];
   weeks = [];  
   monthSelect: FormControl = new FormControl();
+  selectedYear: number;
   selectedMonth: number;
   selectedDay: number;
   todayDate: Date = new Date();
@@ -76,7 +77,6 @@ export class CalendarComponent implements OnInit {
 
   getFirstDayOfWeek(day: number, dayOfWeek: number): number {
     const diff = day % 7 - 1;
-
     let firstDayOfWeek = (dayOfWeek - diff) % 7;
 
     return firstDayOfWeek >= 0 ? firstDayOfWeek : firstDayOfWeek + 7;
@@ -94,11 +94,12 @@ export class CalendarComponent implements OnInit {
     if(isNumber(day)){
       this.selectedMonth = this.monthSelect.value;
       this.selectedDay = day;
-      this.dateChange.emit(new Date(this.todayDate.getFullYear(), this.monthSelect.value, day));
+      this.dateChange.emit(new Date(this.selectedYear, this.selectedMonth, this.selectedDay));
     }
   }
 
   setSelectedDate(){
+    this.selectedYear = this.date.getFullYear();
     this.selectedMonth = this.date.getMonth();
     this.selectedDay = this.date.getDate();
   }

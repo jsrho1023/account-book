@@ -1,0 +1,23 @@
+<h3 class="consumption-title" mat-dialog-title>Add Consumption</h3>
+<div mat-dialog-content>
+  <form [formGroup]="consumptionForm">
+    <mat-form-field appearance="fill">
+      <mat-label>How much you spent?</mat-label>
+      <input matInput formControlName="amount" [errorStateMatcher]="matcher" placeholder="Amount" type="text">
+      <mat-error *ngIf="consumptionForm.controls.amount.hasError('pattern') && !consumptionForm.controls.amount.hasError('required')">
+        <strong>Numbers</strong> only
+      </mat-error>
+      <mat-error *ngIf="consumptionForm.controls.amount.hasError('required')">
+        Amount is <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Want to say something?</mat-label>
+      <input matInput formControlName="desc" placeholder="Description" type="text">
+    </mat-form-field>
+  </form>
+</div>
+<div class="action-button-area" mat-dialog-actions>
+  <button mat-raised-button color="currentColor" (click)="onCancel()" cdkFocused>Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSave()" mat-dialog-close [disabled]="!consumptionForm.valid">Save</button>
+</div>

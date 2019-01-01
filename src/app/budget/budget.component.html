@@ -20,7 +20,9 @@
     <div class="consumption-list">
         <div class="consumption-list-header">
             <span class="consumption-list-title">Today's Consumptions</span>
-            <mat-icon class="consumption-list-add">add_box</mat-icon>
+            <button mat-icon-button (click)="onAdd()">
+                <mat-icon class="consumption-list-add">add_box</mat-icon>
+            </button>
         </div>        
         <mat-table class="consumption-list-table" [dataSource]="dataSource">
             <!-- Description Column -->
@@ -45,6 +47,6 @@
 
     <div class="action-button-box">
         <button mat-raised-button color="warn" (click)="onClear()" [disabled]="!canClear">Clear</button>
-        <button mat-raised-button color="primary">Save</button>
+        <button mat-raised-button color="primary" (click)="onSave()" cdkFocusInitial>Save</button>
     </div>
 </div>
