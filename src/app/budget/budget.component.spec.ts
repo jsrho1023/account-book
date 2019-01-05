@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BudgetComponent } from './budget.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material';
+import { MatNativeDateModule, MatDialogModule } from '@angular/material';
 import { DailyExpenseState } from './budget.state';
 import { NgxsModule } from '@ngxs/store';
 import { of, Observable } from 'rxjs';
@@ -18,6 +18,8 @@ import { AddConsumption, ClearConsumptions } from './budget.actions';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { registerLocaleData } from '@angular/common';
 import localeKR from '@angular/common/locales/ko';
+import { ConsumptionComponent } from '../consumption/consumption.component';
+import { HttpClientModule } from '@angular/common/http';
 
 registerLocaleData(localeKR, 'ko');
 
@@ -39,6 +41,8 @@ describe('BudgetComponent', () => {
         MatDatepickerModule,
         MatNativeDateModule,
         MatIconModule,
+        MatDialogModule,
+        HttpClientModule,
         NgxsModule.forRoot([
           DailyExpenseState
         ])]
@@ -138,23 +142,20 @@ describe('BudgetComponent', () => {
     })
 
     describe('when onAdd', () => {
-      it('then call addConsumption with form values', () => {
-        const budgetComponent: BudgetComponent = fixture.componentInstance;
-        budgetComponent.consumptionForm.controls.amount.setValue(2000);
-        budgetComponent.consumptionForm.controls.desc.setValue('test');
-        spyOn(fixture.componentInstance, 'addConsumption');
+      it('then call dialog open method with ConsumptionComponent', () => {
+        const budgetComponent: BudgetComponent = fixture.componentInstance;   
+        const afterClosedSpy = jasmine.createSpyObj('afterClosed', ['subscribe'])     
+        const dialogRefSpy = jasmine.createSpyObj('dialogRef', {
+          'afterClosed': afterClosedSpy
+        });
+        spyOn(budgetComponent.dialog, 'open').and.returnValue(dialogRefSpy);
+        
         fixture.componentInstance.onAdd();
-        expect(fixture.componentInstance.addConsumption).toHaveBeenCalledWith(new Consumption(2000, 'test'));
-      })
-
-      it('then clear value of form controls', () => {
-        const budgetComponent: BudgetComponent = fixture.componentInstance;
-        budgetComponent.consumptionForm.controls.amount.setValue(2000);
-        budgetComponent.consumptionForm.controls.desc.setValue('test');
-        fixture.componentInstance.onAdd();
-        expect(budgetComponent.consumptionForm.controls.amount.value).toEqual(null)
-        expect(budgetComponent.consumptionForm.controls.desc.value).toEqual(null)
-        expect(budgetComponent.consumptionForm.controls.amount.errors).toEqual({required: true})
+        expect(budgetComponent.dialog.open).toHaveBeenCalledWith(ConsumptionComponent, {
+          width: '250px',
+          data: { amount: 0, desc: "" }
+        });
+        expect(afterClosedSpy.subscribe).toHaveBeenCalled()
       })
     })
 

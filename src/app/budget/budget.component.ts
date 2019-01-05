@@ -26,7 +26,7 @@ export class BudgetComponent implements OnInit {
 
     @Select(state => state.dailyExpense) dailyExpense$: Observable<DailyExpense>;
 
-    constructor(public store: Store, private dialog: MatDialog) { }
+    constructor(public store: Store, public dialog: MatDialog) { }
 
     ngOnInit() {
         this.balance = this.budget;
@@ -54,10 +54,6 @@ export class BudgetComponent implements OnInit {
         }
     }
 
-    addConsumption(consumption: Consumption) {
-        this.store.dispatch(new AddConsumption(consumption));
-    }
-
     onAdd() {
         const dialogRef = this.dialog.open(ConsumptionComponent, {
             width: '250px',
@@ -71,6 +67,10 @@ export class BudgetComponent implements OnInit {
                 this.addConsumption(new Consumption(amount, desc));
             }
         });
+    }
+
+    addConsumption(consumption: Consumption) {
+        this.store.dispatch(new AddConsumption(consumption));
     }
 
     onClear() {

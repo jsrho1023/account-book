@@ -47,7 +47,11 @@ describe('CalendarComponent', () => {
       it('then show today date as today', ()=>{
         const calendarTemplate : HTMLElement = fixture.nativeElement;
         const today: HTMLSelectElement = calendarTemplate.querySelector('.day.today');
-        expect(today.textContent).toBe(component.todayDate.getDate().toString());
+        if(component.todayDate.getMonth() ===  component.selectedMonth){
+          expect(today.textContent).toBe(component.todayDate.getDate().toString());
+        }else{
+          expect(today).toBeNull();
+        }
       })
     })
   })
@@ -152,10 +156,12 @@ describe('CalendarComponent', () => {
 
     describe('when call isToday', () =>{
       it('given same day with today, then return true', ()=>{
+        component.monthSelect.setValue(new Date().getMonth());
         expect(component.isToday(new Date().getDate())).toBeTruthy();
       })
 
       it('given other day with today, then return false', ()=>{
+        component.monthSelect.setValue(new Date().getMonth());
         expect(component.isToday(new Date().getDate()-1)).toBeFalsy();
       })      
     })
