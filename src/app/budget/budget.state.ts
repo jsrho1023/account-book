@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Action, State, StateContext } from '@ngxs/store';
 import { DailyExpense } from '../domain/dailyExpense';
 import { AddConsumption, ClearConsumptions, SaveExpense } from './budget.actions';
+import { environment } from '../../environments/environment'
 
 const dailyExpenseDefault: DailyExpense = {
     datetime: new Date(),
@@ -38,7 +39,7 @@ export class DailyExpenseState {
     SaveExpense(context: StateContext<DailyExpense>){
         const state = context.getState()
         const date = state.datetime.toISOString().slice(0,10)
-        this.http.post<DailyExpense>('http://localhost:9999/api/expense/day/' + date, context.getState())
+        this.http.post<DailyExpense>(environment.apiUrl + ':' + environment.apiPort + '/api/expense/day/' + date, context.getState())
             .subscribe(expense => {
                 console.log(expense);
             });
