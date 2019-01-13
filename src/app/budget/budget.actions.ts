@@ -9,6 +9,10 @@ export class ClearConsumptions {
     static readonly type = '[Budget Page] Clear All Consumptions';
 }
 
+export class GetExpense {
+    static readonly type = '[Budget Page] Get Expense from Backend';
+}
+
 export class SaveExpense {
-    static readonly type = '[Budget Page] Save Expense to Backend'
+    static readonly type = '[Budget Page] Save Expense to Backend';
 }

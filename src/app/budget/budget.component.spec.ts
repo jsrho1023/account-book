@@ -14,7 +14,7 @@ import { NgxsModule } from '@ngxs/store';
 import { of, Observable } from 'rxjs';
 import { DailyExpense } from '../domain/dailyExpense';
 import { Consumption } from '../domain/consumption';
-import { AddConsumption, ClearConsumptions } from './budget.actions';
+import { AddConsumption, ClearConsumptions, GetExpense, SaveExpense } from './budget.actions';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { registerLocaleData } from '@angular/common';
 import localeKR from '@angular/common/locales/ko';
@@ -79,14 +79,14 @@ describe('BudgetComponent', () => {
   describe('Render', () => {
     describe('when loaded', () => {
       it('then have budget value 10000', () => {
-        const budgetComponent: HTMLElement = fixture.nativeElement;
-        const titleElement = budgetComponent.querySelector(".budget-total");
+        const budgetTemplate: HTMLElement = fixture.nativeElement;
+        const titleElement = budgetTemplate.querySelector(".budget-total");
         expect(titleElement.textContent.trim()).toContain("10,000");
       })
 
       it('then have remain value 7000', () => {
-        const budgetComponent: HTMLElement = fixture.nativeElement;
-        const remainElement = budgetComponent.querySelector(".balance-amount");
+        const budgetTemplate: HTMLElement = fixture.nativeElement;
+        const remainElement = budgetTemplate.querySelector(".balance-amount");
         expect(remainElement.textContent.trim()).toContain("7,000")
       })
     })
@@ -95,77 +95,147 @@ describe('BudgetComponent', () => {
   describe('Life Cycle', () => {
     describe('when ngOnInit', () => {
       it('then subscribe dailyExpense state', () => {
-        spyOn(fixture.componentInstance.dailyExpense$, 'subscribe');
-        fixture.componentInstance.ngOnInit()
-        expect(fixture.componentInstance.dailyExpense$.subscribe).toHaveBeenCalled()
+        spyOn(component.dailyExpense$, 'subscribe');
+        component.ngOnInit();
+        expect(component.dailyExpense$.subscribe).toHaveBeenCalledTimes(1);
       })
 
       it('then set canClear true', () => {
-        expect(fixture.componentInstance.canClear).toBeTruthy()
+        expect(component.canClear).toBeTruthy();
+      })
+
+      it('then call getExpense', () => {
+        spyOn(component, 'getExpense');
+        component.ngOnInit();
+        expect(component.getExpense).toHaveBeenCalledTimes(1);
+      })
+    })
+  })
+
+  describe('Event', () => {
+    describe('when add icon click', () => {
+      it('then call onAdd', () => {
+        const budgetTemplate: HTMLElement = fixture.nativeElement;
+        const addIconButton: HTMLButtonElement = budgetTemplate.querySelector('.consumption-list-header > button');
+        spyOn(component, 'onAdd');
+        addIconButton.click();
+        expect(component.onAdd).toHaveBeenCalledTimes(1);
+      })
+    })
+
+    describe('when clear button click', () => {
+      it('then call onClear', () => {
+        const budgetTemplate: HTMLElement = fixture.nativeElement;
+        const clearButton: HTMLButtonElement = budgetTemplate.querySelector('.action-button-box button:first-of-type');
+        spyOn(component, 'onClear');
+        clearButton.click();
+        expect(component.onClear).toHaveBeenCalledTimes(1);
+      })
+    })
+
+    describe('when save button click', () => {
+      it('then call onSave', () => {
+        const budgetTemplate: HTMLElement = fixture.nativeElement;
+        const saveButton: HTMLButtonElement = budgetTemplate.querySelector('.action-button-box button:last-of-type');
+        spyOn(component, 'onSave');
+        saveButton.click();
+        expect(component.onSave).toHaveBeenCalledTimes(1);
       })
     })
   })
 
   describe('Method', () => {
-    describe('when checkConsumptions', ()=>{
-      it('then set canClear false if consumptions has no consumption', ()=>{
-        const budgetComponent: BudgetComponent = fixture.componentInstance;
+    describe('when checkConsumptions', () => {
+      it('then set canClear false if consumptions has no consumption', () => {
         const dailyExpense: DailyExpense = {
           datetime: new Date(),
           consumptions: []
         }
-        budgetComponent.checkConsumptions(dailyExpense);
-        expect(budgetComponent.canClear).toBeFalsy();
+        component.checkConsumptions(dailyExpense);
+        expect(component.canClear).toBeFalsy();
       })
 
-      it('then set canClear true if consumptions has any consumption', ()=>{
-        const budgetComponent: BudgetComponent = fixture.componentInstance;
+      it('then set canClear true if consumptions has any consumption', () => {
         const dailyExpense: DailyExpense = {
           datetime: new Date(),
           consumptions: [
             new Consumption(1000, 'test')
           ]
         }
-        budgetComponent.checkConsumptions(dailyExpense);
-        expect(budgetComponent.canClear).toBeTruthy();
-      })
-    })
-
-    describe('when addConsumption', () => {
-      it('then dispatch AddConsumption action', () => {
-        const budgetComponent: BudgetComponent = fixture.componentInstance;
-        spyOn(budgetComponent.store, 'dispatch');
-        const consumption = new Consumption(2000, 'test');
-        budgetComponent.addConsumption(consumption)
-        expect(fixture.componentInstance.store.dispatch).toHaveBeenCalledWith(new AddConsumption(consumption));
+        component.checkConsumptions(dailyExpense);
+        expect(component.canClear).toBeTruthy();
       })
     })
 
     describe('when onAdd', () => {
       it('then call dialog open method with ConsumptionComponent', () => {
-        const budgetComponent: BudgetComponent = fixture.componentInstance;   
-        const afterClosedSpy = jasmine.createSpyObj('afterClosed', ['subscribe'])     
+        const budgetComponent: BudgetComponent = component;
+        const afterClosedSpy = jasmine.createSpyObj('afterClosed', ['subscribe'])
         const dialogRefSpy = jasmine.createSpyObj('dialogRef', {
           'afterClosed': afterClosedSpy
         });
         spyOn(budgetComponent.dialog, 'open').and.returnValue(dialogRefSpy);
-        
-        fixture.componentInstance.onAdd();
+
+        component.onAdd();
         expect(budgetComponent.dialog.open).toHaveBeenCalledWith(ConsumptionComponent, {
           width: '250px',
           data: { amount: 0, desc: "" }
         });
-        expect(afterClosedSpy.subscribe).toHaveBeenCalled()
+      })
+
+      it('then subcribe dialogRef afterClosed', () => {
+        const budgetComponent: BudgetComponent = component;
+        const afterClosedSpy = jasmine.createSpyObj('afterClosed', ['subscribe'])
+        const dialogRefSpy = jasmine.createSpyObj('dialogRef', {
+          'afterClosed': afterClosedSpy
+        });
+        spyOn(budgetComponent.dialog, 'open').and.returnValue(dialogRefSpy);
+
+        component.onAdd();
+        expect(afterClosedSpy.subscribe).toHaveBeenCalledWith(jasmine.any(Function))
       })
     })
 
-    describe('when onClear', ()=>{
-      it('then clear dailyExpense$.consumptions',()=>{
-        const budgetComponent: BudgetComponent = fixture.componentInstance;
+    describe('when addConsumption', () => {
+      it('then dispatch saveExpense action', () => {
+        spyOn(component.store, 'dispatch');
+        const consumption = new Consumption(2000, 'test');
+        component.addConsumption(consumption)
+        expect(component.store.dispatch).toHaveBeenCalledWith(new AddConsumption(consumption));
+      })
+    })
+
+    describe('when getExpense', () => {
+      it('then dispatch GetExpense action', () => {
+        spyOn(component.store, 'dispatch');        
+        component.getExpense()
+        expect(component.store.dispatch).toHaveBeenCalledWith(new GetExpense());
+      })
+    })
+
+    describe('when onClear', () => {
+      it('then clear dailyExpense$.consumptions', () => {
+        const budgetComponent: BudgetComponent = component;
         spyOn(budgetComponent.store, 'dispatch');
         budgetComponent.onClear();
         expect(budgetComponent.store.dispatch).toHaveBeenCalledWith(new ClearConsumptions());
         expect(budgetComponent.canClear).toBeFalsy();
+      })
+    })
+
+    describe('when onDateChange', ()=>{
+      it('then log date', ()=>{
+        spyOn(console, 'log');
+        component.onDateChange('2019-01-13')
+        expect(console.log).toHaveBeenCalledWith('2019-01-13')
+      })
+    })
+
+    describe('when onSave', ()=>{
+      it('then dispatch SaveExpense action', ()=>{
+        spyOn(component.store, 'dispatch');        
+        component.onSave()
+        expect(component.store.dispatch).toHaveBeenCalledWith(new SaveExpense());
       })
     })
   })
