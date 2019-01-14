@@ -3,7 +3,7 @@ import { MatTableDataSource, MatDialog } from '@angular/material';
 import { Consumption } from '../domain/consumption';
 import { Store, Select } from "@ngxs/store";
 import { Observable } from 'rxjs';
-import { AddConsumption, ClearConsumptions, GetExpense, SaveExpense } from './budget.actions';
+import { AddConsumption, ClearConsumptions, GetExpense, SaveExpense, SetDate } from './budget.actions';
 import { DailyExpense } from '../domain/dailyExpense';
 import { ConsumptionComponent } from '../consumption/consumption.component';
 
@@ -44,6 +44,8 @@ export class BudgetComponent implements OnInit {
 
                 this.balance = this.budget - totalExpense;
             })
+            
+        this.store.dispatch(new SetDate(this.date));
 
         this.getExpense();
     }

@@ -99,7 +99,6 @@ describe('BudgetComponent', () => {
         component.ngOnInit();
         expect(component.dailyExpense$.subscribe).toHaveBeenCalledTimes(1);
       })
-
       it('then set canClear true', () => {
         expect(component.canClear).toBeTruthy();
       })
@@ -148,7 +147,7 @@ describe('BudgetComponent', () => {
     describe('when checkConsumptions', () => {
       it('then set canClear false if consumptions has no consumption', () => {
         const dailyExpense: DailyExpense = {
-          datetime: new Date(),
+          datetime: new Date().toISOString().slice(0,10),
           consumptions: []
         }
         component.checkConsumptions(dailyExpense);
@@ -157,7 +156,7 @@ describe('BudgetComponent', () => {
 
       it('then set canClear true if consumptions has any consumption', () => {
         const dailyExpense: DailyExpense = {
-          datetime: new Date(),
+          datetime: new Date().toISOString().slice(0,10),
           consumptions: [
             new Consumption(1000, 'test')
           ]

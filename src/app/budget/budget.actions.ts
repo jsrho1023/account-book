@@ -1,5 +1,10 @@
 import { Consumption } from "../domain/consumption";
 
+export class SetDate {
+    static readonly type = '[Budget Page] Set Datetime'
+    constructor(public date: Date) {}
+}
+
 export class AddConsumption {
     static readonly type = '[Budget Page] Add Consumption';
     constructor(public consumption: Consumption) {}

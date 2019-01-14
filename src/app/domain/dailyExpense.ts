@@ -1,7 +1,7 @@
 import { Consumption } from "./consumption";
 
 export class DailyExpense{
-    datetime: Date;
+    datetime: String;
     consumptions: Array<Consumption>;
 
     constructor(){}

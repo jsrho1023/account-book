@@ -5,12 +5,13 @@ import {
     AddConsumption,
     GetExpense,
     ClearConsumptions,
-    SaveExpense
+    SaveExpense,
+    SetDate
 } from './budget.actions';
 import { environment } from '../../environments/environment'
 
 const dailyExpenseDefault: DailyExpense = {
-    datetime: new Date(),
+    datetime: '',
     consumptions: []
 }
 
@@ -43,7 +44,7 @@ export class DailyExpenseState {
     @Action(GetExpense)
     GetExpense(context: StateContext<DailyExpense>) {
         const state = context.getState();
-        const date = state.datetime.toISOString().slice(0, 10);
+        const date = state.datetime;
         this.http.get<DailyExpense>(environment.apiUrl + ':' + environment.apiPort + '/api/expense/day/' + date)
             .subscribe(expense => {
                 context.setState({
@@ -55,11 +56,17 @@ export class DailyExpenseState {
 
     @Action(SaveExpense)
     SaveExpense(context: StateContext<DailyExpense>) {
-        const state = context.getState();
-        const date = state.datetime.toISOString().slice(0, 10);
+        let state = context.getState();
+        const date = state.datetime;
         this.http.post<DailyExpense>(environment.apiUrl + ':' + environment.apiPort + '/api/expense/day/' + date, context.getState())
             .subscribe(expense => {
                 console.log(expense);
             });
+    }
+
+    @Action(SetDate)
+    SetDate(context: StateContext<DailyExpense>, action: SetDate) {
+        let state = context.getState();
+        state.datetime = action.date.toISOString().slice(0,10);
     }
 }

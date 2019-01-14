@@ -25,7 +25,7 @@ export class DailyExpenseService {
     fromJson(jsonObject){
         let dailyExpense = new DailyExpense();
         dailyExpense.consumptions = new Array<Consumption>();
-        dailyExpense.datetime = new Date(jsonObject["datetime"]);
+        dailyExpense.datetime = new Date(jsonObject["datetime"]).toISOString().slice(0, 10);
         let consumptionsArray = jsonObject["consumptions"];
         if(consumptionsArray){
             consumptionsArray.forEach((element) => {
