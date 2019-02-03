@@ -87,7 +87,9 @@ export class BudgetComponent implements OnInit {
     }
 
     onDateChange(date) {
-        console.log(date);
+        this.date = date;
+        this.store.dispatch(new SetDate(date));
+        this.getExpense();
     }
 
     onSave() {

@@ -14,7 +14,7 @@ import { NgxsModule } from '@ngxs/store';
 import { of, Observable } from 'rxjs';
 import { DailyExpense } from '../domain/dailyExpense';
 import { Consumption } from '../domain/consumption';
-import { AddConsumption, ClearConsumptions, GetExpense, SaveExpense } from './budget.actions';
+import { AddConsumption, ClearConsumptions, GetExpense, SaveExpense, SetDate } from './budget.actions';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { registerLocaleData } from '@angular/common';
 import localeKR from '@angular/common/locales/ko';
@@ -224,9 +224,13 @@ describe('BudgetComponent', () => {
 
     describe('when onDateChange', ()=>{
       it('then log date', ()=>{
-        spyOn(console, 'log');
-        component.onDateChange('2019-01-13')
-        expect(console.log).toHaveBeenCalledWith('2019-01-13')
+        spyOn(component.store, 'dispatch');
+        spyOn(component, 'getExpense');
+        const date = new Date();
+        component.onDateChange(date)
+        expect(component.date).toEqual(date);
+        expect(component.store.dispatch).toHaveBeenCalledWith(new SetDate(date));
+        expect(component.getExpense).toHaveBeenCalled()
       })
     })
 
