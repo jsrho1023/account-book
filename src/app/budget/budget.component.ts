@@ -36,6 +36,7 @@ export class BudgetComponent implements OnInit {
                 this.dataSource = new MatTableDataSource(dailyExpense.consumptions);
                 let totalExpense: number = 0;
 
+                console.log(dailyExpense);
                 this.checkConsumptions(dailyExpense);
 
                 dailyExpense.consumptions.forEach(consumption => {

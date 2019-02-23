@@ -67,6 +67,8 @@ export class DailyExpenseState {
     @Action(SetDate)
     SetDate(context: StateContext<DailyExpense>, action: SetDate) {
         let state = context.getState();
-        state.datetime = action.date.toISOString().slice(0,10);
+        const timezoneOffset = action.date.getTimezoneOffset() * 60000;
+        const localISOTime = (new Date(action.date.getTime() - timezoneOffset)).toISOString().slice(0, -1);
+        state.datetime = localISOTime.slice(0,10);
     }
 }
