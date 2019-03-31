@@ -8,6 +8,7 @@ import {
     SaveExpense,
     SetDate
 } from './budget.actions';
+import * as moment from 'moment';
 import { environment } from '../../environments/environment'
 
 const dailyExpenseDefault: DailyExpense = {
@@ -38,7 +39,15 @@ export class DailyExpenseState {
     @Action(ClearConsumptions)
     ClearConsumptions(context: StateContext<DailyExpense>) {
         const state = context.getState();
-        context.setState(dailyExpenseDefault);
+        this.http.delete<DailyExpense>(environment.apiUrl + ':' + environment.apiPort + '/api/expense/day/' + state.datetime)
+            .subscribe(expense => {
+                console.log(expense);
+            });
+
+        context.setState({
+            ...state,
+            consumptions: dailyExpenseDefault.consumptions
+        })
     }
 
     @Action(GetExpense)
@@ -58,7 +67,7 @@ export class DailyExpenseState {
     SaveExpense(context: StateContext<DailyExpense>) {
         let state = context.getState();
         const date = state.datetime;
-        this.http.post<DailyExpense>(environment.apiUrl + ':' + environment.apiPort + '/api/expense/day/' + date, context.getState())
+        this.http.post<DailyExpense>(environment.apiUrl + ':' + environment.apiPort + '/api/expense/day/' + date, state)
             .subscribe(expense => {
                 console.log(expense);
             });
@@ -67,8 +76,10 @@ export class DailyExpenseState {
     @Action(SetDate)
     SetDate(context: StateContext<DailyExpense>, action: SetDate) {
         let state = context.getState();
-        const timezoneOffset = action.date.getTimezoneOffset() * 60000;
-        const localISOTime = (new Date(action.date.getTime() - timezoneOffset)).toISOString().slice(0, -1);
-        state.datetime = localISOTime.slice(0,10);
+        const momentDatetime = moment(action.date);
+        context.setState({
+            ...state,
+            datetime: momentDatetime.format('YYYY-MM-DD')
+        });
     }
 }
