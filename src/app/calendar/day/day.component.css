@@ -1,0 +1,13 @@
+.day {
+  display: flex;
+  flex-direction: column;
+}
+
+.date span {
+  font-size: 14px;
+}
+
+.budget span {
+  font-size: 12px;
+  color: dimgray;
+}

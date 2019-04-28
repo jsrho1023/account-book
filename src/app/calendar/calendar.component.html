@@ -10,10 +10,18 @@
     <div>Sat</div>
   </div>
   <div class="week" *ngFor="let week of weeks">
-    <div *ngFor="let day of week.days" 
+    <app-day *ngFor="let day of week.days"
+         class="day"
+         [class.active]="isSelectedDate(day)"
+         [class.today]="isToday(day)"
+         [date]="day.date"
+         [dailyBudget]="day.budget"
+         (click)="selectDay(day)">
+    </app-day>
+    <!-- <div *ngFor="let day of week.days" 
          class="day" 
          [class.active]="isSelectedDate(day)" 
          [class.today]="isToday(day)" 
-         (click)="selectDay(day)">{{day}}</div>
+         (click)="selectDay(day)">{{day}}</div> -->
   </div>
 </div>

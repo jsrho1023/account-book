@@ -20,6 +20,7 @@ export class BudgetComponent implements OnInit {
     dataSource: MatTableDataSource<Consumption>;
     balance: number;
 
+    canSave: boolean = false;
     canClear: boolean = false;
 
     @ViewChild("save") saveButton: ElementRef;
@@ -75,10 +76,12 @@ export class BudgetComponent implements OnInit {
 
     getExpense(){
         this.store.dispatch(new GetExpense());
+        this.canSave = false;
     }
 
     addConsumption(consumption: Consumption) {
         this.store.dispatch(new AddConsumption(consumption));
+        this.canSave = true;
     }
 
     onClear() {
@@ -94,5 +97,6 @@ export class BudgetComponent implements OnInit {
 
     onSave() {
         this.store.dispatch(new SaveExpense());
+        this.canSave = false;
     }
 }

@@ -47,6 +47,6 @@
 
     <div class="action-button-box">
         <button mat-raised-button color="warn" (click)="onClear()" [disabled]="!canClear">Clear</button>
-        <button mat-raised-button color="primary" (click)="onSave()" cdkFocusInitial>Save</button>
+        <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!canSave" cdkFocusInitial>Save</button>
     </div>
 </div>

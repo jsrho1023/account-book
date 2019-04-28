@@ -55,16 +55,16 @@ export class CalendarComponent implements OnInit {
       for (let i = 0; i < 7; i++) {
         if (currentWeek === 0) {
           if (i < firstDayOfWeek) {
-            days.push('');
+            days.push({date:'', budget:0});
           } else {
-            days.push(currentDay++);
+            days.push({date:currentDay++, budget:0});
           }
         }
         else {
           if (currentDay <= lastDay) {
-            days.push(currentDay++);
+            days.push({date:currentDay++, budget:0});
           } else {
-            days.push('');
+            days.push({date:'', budget:0});
           }
         }
       }

@@ -14,17 +14,18 @@ import { AppComponent } from './app.component';
 import { BudgetComponent } from "./budget/budget.component";
 import { HeaderComponent } from './header/header.component';
 import { SettingComponent } from './setting/setting.component';
+import { ConsumptionComponent } from './consumption/consumption.component';
+import { CalendarComponent } from './calendar/calendar.component';
+import { DayComponent } from './calendar/day/day.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin'
 import { DailyExpenseState } from './budget/budget.state';
-import { CalendarComponent } from './calendar/calendar.component';
 
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeKR from '@angular/common/locales/ko';
-import { ConsumptionComponent } from './consumption/consumption.component';
 
 registerLocaleData(localeKR, 'ko');
 
@@ -40,7 +41,8 @@ const appRoutes : Routes = [
     HeaderComponent,
     SettingComponent,
     CalendarComponent,
-    ConsumptionComponent
+    ConsumptionComponent,
+    DayComponent
   ],
   imports: [
     BrowserModule,
