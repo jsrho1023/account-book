@@ -11,12 +11,12 @@
   </div>
   <div class="week" *ngFor="let week of weeks">
     <app-day *ngFor="let day of week.days"
-         class="day"
-         [class.active]="isSelectedDate(day)"
-         [class.today]="isToday(day)"
+         class="day-component"
+         [class.active]="isSelectedDate(day.date)"
+         [class.today]="isToday(day.date)"
          [date]="day.date"
          [dailyBudget]="day.budget"
-         (click)="selectDay(day)">
+         (click)="selectDay(day.date)">
     </app-day>
     <!-- <div *ngFor="let day of week.days" 
          class="day" 

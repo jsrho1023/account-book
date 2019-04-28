@@ -1,13 +1,16 @@
 .day {
   display: flex;
   flex-direction: column;
+  text-align: center;
 }
 
 .date span {
   font-size: 14px;
+  line-height: 16px;
 }
 
 .budget span {
   font-size: 12px;
+  line-height: 14px;
   color: dimgray;
 }

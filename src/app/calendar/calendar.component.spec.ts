@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { CalendarComponent } from './calendar.component';
+import { DayComponent } from './day/day.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 describe('CalendarComponent', () => {
@@ -9,7 +10,7 @@ describe('CalendarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CalendarComponent],
+      declarations: [CalendarComponent,DayComponent],
       imports: [BrowserModule,
         FormsModule,
         ReactiveFormsModule]
@@ -40,13 +41,14 @@ describe('CalendarComponent', () => {
         fixture.componentInstance.selectedDay = 5;
         fixture.detectChanges();
         const calendarTemplate : HTMLElement = fixture.nativeElement;
-        const selectedDay: HTMLSelectElement = calendarTemplate.querySelector('.day.active');
-        expect(selectedDay.textContent).toBe('5');
+        const selectedDay: HTMLElement = calendarTemplate.querySelector('.day-component.active');
+        const day: HTMLSpanElement = selectedDay.querySelector('span');
+        expect(day.textContent).toBe('5');
       })
 
       it('then show today date as today', ()=>{
         const calendarTemplate : HTMLElement = fixture.nativeElement;
-        const today: HTMLSelectElement = calendarTemplate.querySelector('.day.today');
+        const today: HTMLElement = calendarTemplate.querySelector('.day-component.today');
         if(component.todayDate.getMonth() ===  component.selectedMonth){
           expect(today.textContent).toBe(component.todayDate.getDate().toString());
         }else{
@@ -61,17 +63,18 @@ describe('CalendarComponent', () => {
       it('with "" then call selectDay method with empty string', ()=>{
         spyOn(component, 'selectDay');
         const calendarTemplate : HTMLElement = fixture.nativeElement;        
-        const element : HTMLButtonElement = calendarTemplate.querySelectorAll('.day').item(3) as HTMLButtonElement;
+        const element : HTMLButtonElement = calendarTemplate.querySelectorAll('.day-component').item(3) as HTMLButtonElement;
         element.click();
         expect(component.selectDay).toHaveBeenCalledWith('');
-      })      
+      })
 
       it('with valid number then call selectDay method with clicked number', ()=>{
         spyOn(component, 'selectDay');        
-        const calendarTemplate : HTMLElement = fixture.nativeElement;        
-        const element : HTMLButtonElement = calendarTemplate.querySelectorAll('.day').item(5) as HTMLButtonElement;
+        const calendarTemplate : HTMLElement = fixture.nativeElement;
+        const element: HTMLButtonElement = calendarTemplate.querySelectorAll('.day-component').item(5) as HTMLButtonElement;
+        debugger
         element.click();
-        expect(component.selectDay).toHaveBeenCalledWith(2);        
+        expect(component.selectDay).toHaveBeenCalledWith(2);
       })      
     })
     describe('when change month', ()=>{

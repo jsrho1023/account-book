@@ -16,10 +16,12 @@ import { DailyExpense } from '../domain/dailyExpense';
 import { Consumption } from '../domain/consumption';
 import { AddConsumption, ClearConsumptions, GetExpense, SaveExpense, SetDate } from './budget.actions';
 import { CalendarComponent } from '../calendar/calendar.component';
+import { ConsumptionComponent } from '../consumption/consumption.component';
+import { DayComponent } from '../calendar/day/day.component';
 import { registerLocaleData } from '@angular/common';
 import localeKR from '@angular/common/locales/ko';
-import { ConsumptionComponent } from '../consumption/consumption.component';
 import { HttpClientModule } from '@angular/common/http';
+
 
 registerLocaleData(localeKR, 'ko');
 
@@ -30,7 +32,7 @@ describe('BudgetComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BudgetComponent, CalendarComponent],
+      declarations: [BudgetComponent, CalendarComponent, DayComponent],
       imports: [BrowserModule,
         FormsModule,
         BrowserAnimationsModule,
@@ -135,6 +137,8 @@ describe('BudgetComponent', () => {
     describe('when save button click', () => {
       it('then call onSave', () => {
         const budgetTemplate: HTMLElement = fixture.nativeElement;
+        component.canSave = true;
+        fixture.detectChanges();
         const saveButton: HTMLButtonElement = budgetTemplate.querySelector('.action-button-box button:last-of-type');
         spyOn(component, 'onSave');
         saveButton.click();
@@ -150,6 +154,7 @@ describe('BudgetComponent', () => {
           datetime: new Date().toISOString().slice(0,10),
           consumptions: []
         }
+        debugger
         component.checkConsumptions(dailyExpense);
         expect(component.canClear).toBeFalsy();
       })

@@ -59,18 +59,21 @@
   justify-content: space-around;
 }
 
-.day {
+.day-component {
   width: 10%;
   text-align: center;
-  padding: 5px;
+  padding: 2px;
   cursor: pointer;
 }
 
-.day.active {
-  background-color: #3c70e8;
+.day-component.today {
+  background-color: cadetblue;
+  font-weight: bold;
+  color: beige;
 }
 
-.day.today {
-  font-weight: bold;
-  text-decoration: underline;
+.day-component.active {
+  background-color: #3c70e8;
+  color: beige;
 }
+
