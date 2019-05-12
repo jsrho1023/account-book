@@ -3,6 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CalendarComponent } from './calendar.component';
 import { DayComponent } from './day/day.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { NgxsModule } from '@ngxs/store';
+import { MonthlyExpenseState } from './calendar.state';
 
 describe('CalendarComponent', () => {
   let component: CalendarComponent;
@@ -13,8 +16,12 @@ describe('CalendarComponent', () => {
       declarations: [CalendarComponent,DayComponent],
       imports: [BrowserModule,
         FormsModule,
-        ReactiveFormsModule]
-    })
+        ReactiveFormsModule,
+        HttpClientModule,
+        NgxsModule.forRoot([
+          MonthlyExpenseState
+        ])]
+      })
       .compileComponents();
   }));
 

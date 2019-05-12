@@ -20,8 +20,9 @@ import { DayComponent } from './calendar/day/day.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule } from '@ngxs/store';
-import { NgxsRouterPluginModule } from '@ngxs/router-plugin'
+import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { DailyExpenseState } from './budget/budget.state';
+import { MonthlyExpenseState } from './calendar/calendar.state';
 
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
@@ -56,7 +57,8 @@ const appRoutes : Routes = [
     MatDialogModule,
     HttpClientModule,
     NgxsModule.forRoot([
-      DailyExpenseState
+      DailyExpenseState,
+      MonthlyExpenseState
     ]),
     RouterModule.forRoot(appRoutes),
     NgxsRouterPluginModule.forRoot()

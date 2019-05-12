@@ -23,8 +23,6 @@ export class BudgetComponent implements OnInit {
     canSave: boolean = false;
     canClear: boolean = false;
 
-    @ViewChild("save") saveButton: ElementRef;
-
     @Select(state => state.dailyExpense) dailyExpense$: Observable<DailyExpense>;
 
     constructor(public store: Store, public dialog: MatDialog) { }
@@ -44,7 +42,7 @@ export class BudgetComponent implements OnInit {
                 });
 
                 this.balance = this.budget - totalExpense;
-            })
+            });
             
         this.store.dispatch(new SetDate(this.date));
 

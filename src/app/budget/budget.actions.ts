@@ -1,7 +1,7 @@
 import { Consumption } from "../domain/consumption";
 
 export class SetDate {
-    static readonly type = '[Budget Page] Set Datetime'
+    static readonly type = '[Budget Page] Set Datetime';
     constructor(public date: Date) {}
 }
 

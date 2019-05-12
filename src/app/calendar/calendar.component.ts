@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { isNumber } from 'util';
+import { Store, Select } from "@ngxs/store";
+import { Observable } from 'rxjs';
+import { GetMonthlyExpense } from './calendar.actions';
 
 @Component({
   selector: 'app-calendar',
@@ -33,16 +36,26 @@ export class CalendarComponent implements OnInit {
   selectedDay: number;
   todayDate: Date = new Date();
 
-  constructor() { }
+  @Select(state => state.monthlyExpense) monthlyExpense$: Observable<{}>;
+
+  constructor(public store: Store) { }
 
   ngOnInit() {
     this.setSelectedDate();
     this.monthSelect.setValue(this.selectedMonth);
-    
+
+    this.monthlyExpense$
+        .subscribe((result) => {
+          console.log(result);
+        });
+
+    const firstDay = this.date.getFullYear() + '-' + (this.date.getMonth() + 1) + '-1';    
+
     const dayOfWeek = this.date.getDay();
     const firstDayOfWeek = this.getFirstDayOfWeek(this.selectedDay, dayOfWeek);
     const lastDay = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate();
     this.weeks = this.setCalendarDate(firstDayOfWeek, lastDay);
+    this.store.dispatch(new GetMonthlyExpense(firstDay));
   }
 
   setCalendarDate(firstDayOfWeek: number, lastDay: number) {
