@@ -15,15 +15,22 @@ import { of, Observable } from 'rxjs';
 import { DailyExpense } from '../domain/dailyExpense';
 import { Consumption } from '../domain/consumption';
 import { AddConsumption, ClearConsumptions, GetExpense, SaveExpense, SetDate } from './budget.actions';
-import { CalendarComponent } from '../calendar/calendar.component';
 import { ConsumptionComponent } from '../consumption/consumption.component';
-import { DayComponent } from '../calendar/day/day.component';
 import { registerLocaleData } from '@angular/common';
 import localeKR from '@angular/common/locales/ko';
 import { HttpClientModule } from '@angular/common/http';
-
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 registerLocaleData(localeKR, 'ko');
+
+@Component({
+  selector: 'app-calendar',
+  template: '<span>mock calendar</span>'
+})
+class MockCalendarComponent {
+  @Input('date') date: Date;
+  @Output('dateChange') dateChange: EventEmitter<Date> = new EventEmitter<Date>();
+}
 
 describe('BudgetComponent', () => {
   let component: BudgetComponent;
@@ -32,7 +39,7 @@ describe('BudgetComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [BudgetComponent, CalendarComponent, DayComponent],
+      declarations: [BudgetComponent, MockCalendarComponent],
       imports: [BrowserModule,
         FormsModule,
         BrowserAnimationsModule,
@@ -71,6 +78,10 @@ describe('BudgetComponent', () => {
 
     testableDailyExpenseState = of(dailyExpenseState)
     component.dailyExpense$ = testableDailyExpenseState;
+
+    const mockStore = jasmine.createSpyObj('mockStore', ['dispatch']);
+    component.store = mockStore;
+    
     fixture.detectChanges();
   });
 
@@ -154,7 +165,6 @@ describe('BudgetComponent', () => {
           datetime: new Date().toISOString().slice(0,10),
           consumptions: []
         }
-        debugger
         component.checkConsumptions(dailyExpense);
         expect(component.canClear).toBeFalsy();
       })
@@ -202,7 +212,6 @@ describe('BudgetComponent', () => {
 
     describe('when addConsumption', () => {
       it('then dispatch saveExpense action', () => {
-        spyOn(component.store, 'dispatch');
         const consumption = new Consumption(2000, 'test');
         component.addConsumption(consumption)
         expect(component.store.dispatch).toHaveBeenCalledWith(new AddConsumption(consumption));
@@ -211,7 +220,6 @@ describe('BudgetComponent', () => {
 
     describe('when getExpense', () => {
       it('then dispatch GetExpense action', () => {
-        spyOn(component.store, 'dispatch');        
         component.getExpense()
         expect(component.store.dispatch).toHaveBeenCalledWith(new GetExpense());
       })
@@ -220,7 +228,6 @@ describe('BudgetComponent', () => {
     describe('when onClear', () => {
       it('then clear dailyExpense$.consumptions', () => {
         const budgetComponent: BudgetComponent = component;
-        spyOn(budgetComponent.store, 'dispatch');
         budgetComponent.onClear();
         expect(budgetComponent.store.dispatch).toHaveBeenCalledWith(new ClearConsumptions());
         expect(budgetComponent.canClear).toBeFalsy();
@@ -229,7 +236,6 @@ describe('BudgetComponent', () => {
 
     describe('when onDateChange', ()=>{
       it('then log date', ()=>{
-        spyOn(component.store, 'dispatch');
         spyOn(component, 'getExpense');
         const date = new Date();
         component.onDateChange(date)
@@ -241,7 +247,6 @@ describe('BudgetComponent', () => {
 
     describe('when onSave', ()=>{
       it('then dispatch SaveExpense action', ()=>{
-        spyOn(component.store, 'dispatch');        
         component.onSave()
         expect(component.store.dispatch).toHaveBeenCalledWith(new SaveExpense());
       })

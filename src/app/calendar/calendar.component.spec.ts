@@ -6,10 +6,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxsModule } from '@ngxs/store';
 import { MonthlyExpenseState } from './calendar.state';
+import { GetMonthlyExpense } from './calendar.actions';
+import { Observable, of } from 'rxjs';
+import { MonthlyExpense } from '../domain/monthlyExpense';
 
 describe('CalendarComponent', () => {
   let component: CalendarComponent;
   let fixture: ComponentFixture<CalendarComponent>;
+  let testableMonthlyExpenseState: Observable<MonthlyExpense>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -28,7 +32,50 @@ describe('CalendarComponent', () => {
   beforeEach(() => {    
     fixture = TestBed.createComponent(CalendarComponent);    
     component = fixture.componentInstance;
+    Object.defineProperty(component, 'monthlyExpense$', { writable: true });
+    let monthlyExpenseState: MonthlyExpense = {
+      "expense": {
+        "2018-11-01": 1000,
+        "2018-11-02": 0,
+        "2018-11-03": 2000,
+        "2018-11-04": 0,
+        "2018-11-05": 0,
+        "2018-11-06": 0,
+        "2018-11-07": 5000,
+        "2018-11-08": 0,
+        "2018-11-09": 0,
+        "2018-11-10": 0,
+        "2018-11-11": 0,
+        "2018-11-12": 0,
+        "2018-11-13": 0,
+        "2018-11-14": 0,
+        "2018-11-15": 0,
+        "2018-11-16": 12000,
+        "2018-11-17": 0,
+        "2018-11-18": 0,
+        "2018-11-19": 0,
+        "2018-11-20": 0,
+        "2018-11-21": 0,
+        "2018-11-22": 0,
+        "2018-11-23": 0,
+        "2018-11-24": 0,
+        "2018-11-25": 0,
+        "2018-11-26": 0,
+        "2018-11-27": 0,
+        "2018-11-28": 0,
+        "2018-11-29": 0,
+        "2018-11-30": 0,
+        "2018-11-31": 0,
+      }
+    }
+
+    testableMonthlyExpenseState = of(monthlyExpenseState);
+    component.monthlyExpense$ = testableMonthlyExpenseState;
     component.date = new Date(2018,10,24);
+
+    const mockStore = jasmine.createSpyObj('mockStore', ['dispatch']);
+    component.store = mockStore;
+
     fixture.detectChanges();
   });
 
@@ -65,6 +112,21 @@ describe('CalendarComponent', () => {
     })
   })
 
+  describe('Life Cycle', () => {
+    describe('when ngOnInit', () => {
+      it('then subscribe monthlyExpense state', () => {
+        spyOn(component.monthlyExpense$, 'subscribe');
+        component.ngOnInit();
+        expect(component.monthlyExpense$.subscribe).toHaveBeenCalledTimes(1);
+      })
+
+      it('then call store.dispatch with GetMonthlyExpense action', () => {
+        component.ngOnInit();
+        expect(component.store.dispatch).toHaveBeenCalledWith(new GetMonthlyExpense('2018-11-1'));
+      })
+    })
+  })
+
   describe('Event', ()=>{
     describe('when click day', ()=>{
       it('with "" then call selectDay method with empty string', ()=>{
@@ -79,7 +141,6 @@ describe('CalendarComponent', () => {
         spyOn(component, 'selectDay');        
         const calendarTemplate : HTMLElement = fixture.nativeElement;
         const element: HTMLButtonElement = calendarTemplate.querySelectorAll('.day-component').item(5) as HTMLButtonElement;
-        debugger
         element.click();
         expect(component.selectDay).toHaveBeenCalledWith(2);
       })      
@@ -98,38 +159,17 @@ describe('CalendarComponent', () => {
   })
 
   describe('Method', () => {
-    describe('when call getFirstDayOfWeek', () => {
-      it('with 16, 5(Friday) then return 4(Thursday)', () => {
-        const firstDayOfWeek = fixture.componentInstance.getFirstDayOfWeek(16, 5);
-        expect(firstDayOfWeek).toBe(4)
+    describe('when call setCalendarDateAndBudget', ()=>{
+      it('given monthlyExpense return calendar array ', ()=>{
+        component.dailyBudget = 0;
       })
-
-      it('with 21, 6(Saturday) then return 0(Sunday)', () => {
-        const firstDayOfWeek = fixture.componentInstance.getFirstDayOfWeek(21, 6);
-        expect(firstDayOfWeek).toBe(0)
-      })
-
-      it('with 8, 6(Saturday) then return 6(Saturday)', () => {
-        const firstDayOfWeek = fixture.componentInstance.getFirstDayOfWeek(8, 6);
-        expect(firstDayOfWeek).toBe(6)
-      })
-    })
+    })    
     
-    describe('when call setCalendarDate', () => {
-      it('with 1 is Saturday, having 31 days then return data array with 6 weeks, 42 days', () => {
-        const calendarDate = fixture.componentInstance.setCalendarDate(6, 31);
-        expect(calendarDate.length).toBe(6);
-        expect(calendarDate.reduce((sum, date)=>{
-          return sum + date.days.length;
-        }, 0)).toBe(42);
-      })
-
-      it('with 1 is Sunday, having 30 days then return data array with 5 weeks, 35 days', () => {
-        const calendarDate = fixture.componentInstance.setCalendarDate(0, 30);
-        expect(calendarDate.length).toBe(5);
-        expect(calendarDate.reduce((sum, date)=>{
-          return sum + date.days.length;
-        }, 0)).toBe(35);
+    describe('when call selectMonth', ()=>{
+      it('given october selected, then set month, call store.dispatch with GetMonthlyExpense action', ()=>{
+        component.monthSelect.setValue(9);
+        component.selectMonth();
+        expect(component.store.dispatch).toHaveBeenCalledWith(new GetMonthlyExpense('2018-10-1'));
       })
     })
 
@@ -145,15 +185,6 @@ describe('CalendarComponent', () => {
         component.selectedDay = 5
         component.selectDay('');
         expect(component.selectedDay).toBe(5);
-      })
-    })
-
-    describe('when call selectMonth', ()=>{
-      it('given october selected, then set month, redraw calendar', ()=>{
-        spyOn(component, 'setCalendarDate');
-        component.monthSelect.setValue(9);
-        component.selectMonth();
-        expect(component.setCalendarDate).toHaveBeenCalledWith(1, 31);
       })
     })
 
@@ -173,7 +204,7 @@ describe('CalendarComponent', () => {
       it('given other day with today, then return false', ()=>{
         component.monthSelect.setValue(new Date().getMonth());
         expect(component.isToday(new Date().getDate()-1)).toBeFalsy();
-      })      
+      })
     })
 
     describe('when call isSelectedDate', () =>{

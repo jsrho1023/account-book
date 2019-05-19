@@ -4,6 +4,7 @@ import { isNumber } from 'util';
 import { Store, Select } from "@ngxs/store";
 import { Observable } from 'rxjs';
 import { GetMonthlyExpense } from './calendar.actions';
+import { MonthlyExpense } from '../domain/monthlyExpense';
 
 @Component({
   selector: 'app-calendar',
@@ -35,8 +36,9 @@ export class CalendarComponent implements OnInit {
   selectedMonth: number;
   selectedDay: number;
   todayDate: Date = new Date();
+  dailyBudget: number = 10000;
 
-  @Select(state => state.monthlyExpense) monthlyExpense$: Observable<{}>;
+  @Select(state => state.monthlyExpense) monthlyExpense$: Observable<MonthlyExpense>;
 
   constructor(public store: Store) { }
 
@@ -45,62 +47,51 @@ export class CalendarComponent implements OnInit {
     this.monthSelect.setValue(this.selectedMonth);
 
     this.monthlyExpense$
-        .subscribe((result) => {
-          console.log(result);
+        .subscribe((monthlyExpense) => {
+          this.weeks = this.setCalendarDateAndBudget(monthlyExpense);
         });
 
-    const firstDay = this.date.getFullYear() + '-' + (this.date.getMonth() + 1) + '-1';    
-
-    const dayOfWeek = this.date.getDay();
-    const firstDayOfWeek = this.getFirstDayOfWeek(this.selectedDay, dayOfWeek);
-    const lastDay = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate();
-    this.weeks = this.setCalendarDate(firstDayOfWeek, lastDay);
+    const firstDay = this.date.getFullYear() + '-' + (this.date.getMonth() + 1) + '-1';
     this.store.dispatch(new GetMonthlyExpense(firstDay));
   }
 
-  setCalendarDate(firstDayOfWeek: number, lastDay: number) {
+  setCalendarDateAndBudget(monthlyExpense: MonthlyExpense){
     let calendarData = [];
-    let currentDay = 1;
-    let currentWeek = 0;
+    let days = [];
+    let budget = -this.dailyBudget;
+    
+    const dateArray = Object.keys(monthlyExpense.expense);
+    const firstKey = dateArray[0];
+    const firstDate = new Date(firstKey);
+    const firstDayOfWeek = firstDate.getDay();
 
-    while (currentDay <= lastDay) {
-      let days = [];
-      for (let i = 0; i < 7; i++) {
-        if (currentWeek === 0) {
-          if (i < firstDayOfWeek) {
-            days.push({date:'', budget:0});
-          } else {
-            days.push({date:currentDay++, budget:0});
-          }
-        }
-        else {
-          if (currentDay <= lastDay) {
-            days.push({date:currentDay++, budget:0});
-          } else {
-            days.push({date:'', budget:0});
-          }
-        }
-      }
-      calendarData.push({ days });
-      currentWeek++;
+    for(let i=0; i<firstDayOfWeek; i++){
+      days.push({date:'', budget:0});
     }
+
+    for (const key in dateArray) {
+      if(days.length == 7) {
+        calendarData.push({days});
+        days = [];
+      }
+      
+      let date = new Date(dateArray[key]);
+      budget = budget - monthlyExpense.expense[dateArray[key]] + this.dailyBudget;
+      days.push({date: date.getDate(), budget: budget});
+    }
+
+    for(let i = days.length; i < 7; i++){
+      days.push({date:'', budget:0});
+    }
+    calendarData.push({days});
 
     return calendarData;
   }
 
-  getFirstDayOfWeek(day: number, dayOfWeek: number): number {
-    const diff = day % 7 - 1;
-    let firstDayOfWeek = (dayOfWeek - diff) % 7;
-
-    return firstDayOfWeek >= 0 ? firstDayOfWeek : firstDayOfWeek + 7;
-  }
-
   selectMonth(){
     this.date.setMonth(this.monthSelect.value);
-    const dayOfWeek = this.date.getDay();
-    const firstDayOfWeek = this.getFirstDayOfWeek(this.selectedDay, dayOfWeek);
-    const lastDay = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate();
-    this.weeks = this.setCalendarDate(firstDayOfWeek, lastDay);
+    const firstDay = this.date.getFullYear() + '-' + (this.date.getMonth() + 1) + '-1';
+    this.store.dispatch(new GetMonthlyExpense(firstDay));
   }
 
   selectDay(day){    
